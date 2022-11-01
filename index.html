@@ -1,0 +1,209 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Blockxy</title>
+    <script type="text/javascript" src="./js/blockly.js"></script>
+    <script type="text/javascript" src="./js/blocks.js"></script>
+    <script type="text/javascript" src="./js/avr.js"></script>
+    <script type="text/javascript" src="./js/Blob.js"></script>
+    <script type="text/javascript" src="./js/spin.js"></script>
+    <script type="text/javascript" src="./js/FileSaver.min.js"></script>
+    <script type="text/javascript" src="./js/blockly_helper.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./msg/js/en.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body onload="init()">
+    <table height="100%" width="100%" style="margin-top: 15px">
+      <tr>
+        <td>
+          <table width="100%">
+            <tr id="tabRow" height="1em">
+              <td id="tab_blocks" class="tabon" onclick="tabClick('blocks')">
+                Blocks
+              </td>
+              <td class="tabmin">&nbsp;</td>
+              <!--td id="tab_javascript" class="taboff" onclick="tabClick(this.id)">JavaScript</td>
+            <td class="tabmin">&nbsp;</td-->
+              <!--td id="tab_dart" class="taboff" onclick="tabClick(this.id)">Dart</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_python" class="taboff" onclick="tabClick(this.id)">Python</td>
+            <td class="tabmin">&nbsp;</td-->
+              <td id="tab_arduino" class="taboff" onclick="tabClick('arduino')">
+                AVR
+              </td>
+              <td class="tabmin">&nbsp;</td>
+              <td
+                id="tab_xml"
+                class="taboff"
+                onclick="tabClick('xml')"
+                style="
+                  border-top: none;
+                  border-right: none;
+                  border-left: none;
+                  background: transparent;
+                "
+              ></td>
+              <td class="tabmax">
+                <!-- liolah -->
+                <button type="button" onclick="uploadClick()">Upload</button>
+                <!-- <button type="button" onclick="resetClick()">Reset</button> -->
+                <button onclick="discard()">Discard</button>
+                <button onclick="saveCode()">Save AVR Code</button>
+                <button onclick="save()">Save Project</button>
+                <button id="fakeload" style="margin-right: 20px">
+                  Load Project
+                </button>
+                <input type="file" id="load" style="display: none" />
+                <!--button class="launch" onclick="runJS()">Run Program</button-->
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td height="99%" id="content_area"></td>
+      </tr>
+    </table>
+    <div id="content_blocks" class="content"></div>
+    <!-- Edit code editor here - liolah -->
+    <textarea
+      id="content_arduino"
+      class="content"
+      readonly
+      wrap="off"
+    ></textarea>
+    <textarea id="content_xml" readonly class="content" wrap="off"></textarea>
+
+    <xml id="toolbox" style="display: none">
+      <category name="Logic">
+        <block type="controls_if"></block>
+        <block type="logic_compare"></block>
+        <block type="logic_operation"></block>
+        <block type="logic_negate"></block>
+        <block type="logic_null"></block>
+      </category>
+      <category name="Control">
+        <block type="base_delay">
+          <value name="DELAY_TIME">
+            <block type="math_number">
+              <field name="NUM">1000</field>
+            </block>
+          </value>
+        </block>
+        <block type="controls_for">
+          <value name="FROM">
+            <block type="math_number">
+              <field name="NUM">1</field>
+            </block>
+          </value>
+          <value name="TO">
+            <block type="math_number">
+              <field name="NUM">10</field>
+            </block>
+          </value>
+        </block>
+        <block type="controls_whileUntil"></block>
+      </category>
+      <category name="Math">
+        <block type="math_number"></block>
+        <block type="math_arithmetic"></block>
+        <block type="base_map">
+          <value name="DMAX">
+            <block type="math_number">
+              <field name="NUM">180</field>
+            </block>
+          </value>
+        </block>
+      </category>
+      <category name="Text">
+        <block type="text"></block>
+      </category>
+      <category name="Variables" custom="VARIABLE"></category>
+      <category name="Functions" custom="PROCEDURE"></category>
+      <sep></sep>
+      <category name="Input/Output">
+        <block type="inout_highlow"></block>
+        <block type="inout_digital_write"></block>
+        <!-- Disabled by liolah -->
+        <!-- <block type="inout_digital_read"></block>
+      <block type="inout_analog_write">
+        <value name="NUM">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="inout_analog_read"></block>
+      <block type="serial_print">
+        <value name="CONTENT">
+          <block type="text">
+            <field name="TEXT"></field>
+          </block>
+        </value>
+      </block>
+      <block type="inout_tone">
+        <value name="NUM">
+          <block type="math_number">
+            <field name="NUM">440</field>
+          </block>
+        </value>
+      </block>
+      <block type="inout_notone"></block>
+      <block type="inout_buildin_led"></block> -->
+      </category>
+      <!-- Disabled categories - liolah -->
+      <!-- <category name="Servo">
+      <block type="servo_move">
+        <value name="DEGREE">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="servo_read_degrees"></block>
+    </category>
+    <category name="Grove Analog">
+      <block type="grove_rotary_angle"></block>
+      <block type="grove_temporature_sensor"></block>
+      <block type="grove_sound_sensor"></block>
+      <block type="grove_thumb_joystick"></block>
+    </category>
+    <category name="Grove">
+      <block type="grove_led"></block>
+      <block type="grove_button"></block>
+      <block type="grove_relay"></block>
+      <block type="grove_tilt_switch"></block>
+      <block type="grove_piezo_buzzer"></block>
+      <block type="grove_pir_motion_sensor"></block>
+      <block type="grove_line_finder"></block>
+      <block type="grove_rgb_led"></block>
+      <block type="grove_ultrasonic_ranger"></block>
+    </category>
+    <category name="Grove LCD">
+      <block type="grove_serial_lcd_print">
+        <value name="TEXT">
+          <block type="text">
+            <field name="TEXT"></field>
+          </block>
+        </value>
+        <value name="TEXT2">
+          <block type="text">
+            <field name="TEXT"></field>
+          </block>
+        </value>
+        <value name="DELAY_TIME">
+          <block type="math_number">
+            <field name="NUM">1000</field>
+          </block>
+        </value>
+      </block>
+      <block type="grove_serial_lcd_power"></block>
+      <block type="grove_serial_lcd_effect"></block>
+    </category>
+    <category name="Grove Motor">
+      <block type="grove_motor_shield"></block>
+    </category> -->
+    </xml>
+  </body>
+</html>
