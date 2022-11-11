@@ -1,5 +1,6 @@
-var TABS_ = ["blocks", "arduino", "xml"];
+var TABS_ = ["blocks", "avr", "xml"];
 var selected = "blocks";
+// Handles tab switching
 function tabClick(clickedName) {
   // If the XML tab was open, save and render the content.
   if (document.getElementById("tab_xml").className == "tabon") {
@@ -62,17 +63,11 @@ function renderContent() {
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
     xmlTextarea.value = xmlText;
     xmlTextarea.focus();
-    /*} else if (content.id == 'content_javascript') {
-    content.innerHTML = Blockly.JavaScript.workspaceToCode();
-  } else if (content.id == 'content_dart') {
-    content.innerHTML = Blockly.Dart.workspaceToCode();
-  } else if (content.id == 'content_python') {
-    content.innerHTML = Blockly.Python.workspaceToCode();*/
-  } else if (content.id == "content_arduino") {
+  } else if (content.id == "content_avr") {
     //content.innerHTML = Blockly.AVR.workspaceToCode();
-    var arduinoTextarea = document.getElementById("content_arduino");
-    arduinoTextarea.value = Blockly.AVR.workspaceToCode();
-    arduinoTextarea.focus();
+    var avrTextarea = document.getElementById("content_avr");
+    avrTextarea.value = Blockly.AVR.workspaceToCode();
+    avrTextarea.focus();
   }
 }
 
@@ -104,10 +99,6 @@ function getBBox_(element) {
  * Initialize Blockly.  Called on page load.
  */
 function init() {
-  //window.onbeforeunload = function() {
-  //  return 'Leaving this page will result in the loss of your work.';
-  //};
-
   var container = document.getElementById("content_area");
   var onresize = function (e) {
     var bBox = getBBox_(container);
@@ -139,7 +130,6 @@ function init() {
   });
 
   auto_save_and_restore_blocks();
-
   //load from url parameter (single param)
   //http://stackoverflow.com/questions/2090551/parse-query-string-in-javascript
   var dest = unescape(location.search.replace(/^.*\=/, "")).replace(/\+/g, " ");

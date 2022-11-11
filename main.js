@@ -1,5 +1,6 @@
 const { BrowserWindow, app } = require("electron");
-// require("./app.js");
+const path = require("path");
+
 
 let mainWindow = null;
 

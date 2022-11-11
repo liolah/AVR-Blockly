@@ -34,6 +34,7 @@ function restore_blocks() {
 /**
  * Save AVR generated code to local file.
  */
+// Edit to send the code to mainIPC and save it to location
 function saveCode() {
   var fileName = window.prompt(
     "What would you like to name your file?",
@@ -52,6 +53,7 @@ function saveCode() {
  * Save blocks to local file.
  * better include Blob and FileSaver for browser compatibility
  */
+// Edit to send the code to mainIPC and save it to location
 function save() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   var data = Blockly.Xml.domToText(xml);
@@ -209,7 +211,6 @@ function load_by_url(uri) {
 }
 
 // TODO: edit the function to run the make file
-// use fetch
 function uploadCode(callback) {
   var url = "http://127.0.0.1:3600/";
   var method = "GET";
@@ -244,13 +245,13 @@ function uploadCode(callback) {
   //       errorInfo =
   //         "code 500\n\nUpload failed.  Is the USBASP connected to USB port?";
   //       break;
-      // case 501:
-      //   errorInfo =
-      //     "code 501\n\nUpload failed.  Is 'ino' installed and in your path?  This only works on Mac OS X and Linux at this time.";
-      //   break;
-      // default:
-      //   errorInfo = "code " + status + "\n\nUnknown error.";
-      //   break;
+  // case 501:
+  //   errorInfo =
+  //     "code 501\n\nUpload failed.  Is 'ino' installed and in your path?  This only works on Mac OS X and Linux at this time.";
+  //   break;
+  // default:
+  //   errorInfo = "code " + status + "\n\nUnknown error.";
+  //   break;
   //   }
 
   //   callback(status, errorInfo);
@@ -263,10 +264,8 @@ function uploadCode(callback) {
 
 //? liolah
 function uploadClick() {
-  var blob = new Blob([Blockly.AVR.workspaceToCode()], {
-    type: "text/plain;charset=utf-8",
-  });
-  saveAs(blob, `blockxy_temp` + ".c");
+  var code = Blockly.AVR.workspaceToCode();
+  saveAs(code, `blockxy_temp` + ".c");
   alert("Ready to upload to Atmega32A.");
 
   uploadCode(function (status, errorInfo) {

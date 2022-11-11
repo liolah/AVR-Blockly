@@ -7,7 +7,6 @@
     <script type="text/javascript" src="./js/avr.js"></script>
     <script type="text/javascript" src="./js/Blob.js"></script>
     <script type="text/javascript" src="./js/spin.js"></script>
-    <script type="text/javascript" src="./js/FileSaver.min.js"></script>
     <script type="text/javascript" src="./js/blockly_helper.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
     <script type="text/javascript" src="./msg/js/en.js"></script>
@@ -29,7 +28,7 @@
             <td class="tabmin">&nbsp;</td>
             <td id="tab_python" class="taboff" onclick="tabClick(this.id)">Python</td>
             <td class="tabmin">&nbsp;</td-->
-              <td id="tab_arduino" class="taboff" onclick="tabClick('arduino')">
+              <td id="tab_avr" class="taboff" onclick="tabClick('avr')">
                 AVR
               </td>
               <td class="tabmin">&nbsp;</td>
@@ -68,7 +67,7 @@
     <div id="content_blocks" class="content"></div>
     <!-- Edit code editor here - liolah -->
     <textarea
-      id="content_arduino"
+      id="content_avr"
       class="content"
       readonly
       wrap="off"
