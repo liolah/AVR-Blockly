@@ -10,6 +10,7 @@
   "author": "Hesham Hany",
   "license": "ISC",
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "node-cmd": "^5.0.0"
   },
   "devDependencies": {

@@ -1,3 +1,5 @@
+const { ipcRenderer, dialog } = require("@electron/remote");
+
 /**
  * Execute the user's code.
  * Just a quick and dirty eval.  No checks for infinite loops, etc.
@@ -31,22 +33,30 @@ function restore_blocks() {
   }
 }
 
+// liolah
+function saveAs(code, name, extension) {
+  ipcRenderer.send("saveAs", { code, name, extension });
+}
+
 /**
  * Save AVR generated code to local file.
  */
 // Edit to send the code to mainIPC and save it to location
 function saveCode() {
-  var fileName = window.prompt(
-    "What would you like to name your file?",
-    "AVR_C_Test"
-  );
-  //doesn't save if the user quits the save prompt
-  if (fileName) {
-    var blob = new Blob([Blockly.AVR.workspaceToCode()], {
-      type: "text/plain;charset=utf-8",
-    });
-    saveAs(blob, fileName + ".c");
-  }
+  console.log("save as called");
+  let options = {
+    title: "Save",
+    defaultPath: "Test",
+    buttonLabel: "Save as",
+    filters: [{ name: "All Files", extensions: ["*"] }],
+  };
+  dialog.showSaveDialog(options).then((filename) => {
+    const { canceled, filePath } = filename;
+    if (!canceled) {
+      var code = Blockly.AVR.workspaceToCode();
+      saveAs(code, filePath, "c");
+    }
+  });
 }
 
 /**
@@ -55,20 +65,21 @@ function saveCode() {
  */
 // Edit to send the code to mainIPC and save it to location
 function save() {
+  console.log("save called");
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   var data = Blockly.Xml.domToText(xml);
-  var fileName = window.prompt(
-    "What would you like to name your file?",
-    "AVR_C_Test"
-  );
-  // Store data in blob.
-  // var builder = new BlobBuilder();
-  // builder.append(data);
-  // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
-  if (fileName) {
-    var blob = new Blob([data], { type: "text/xml" });
-    saveAs(blob, fileName + ".xml");
-  }
+  let options = {
+    title: "Save",
+    defaultPath: "Test",
+    buttonLabel: "Save as",
+    filters: [{ name: "All Files", extensions: ["*"] }],
+  };
+  dialog.showSaveDialog(options).then((filename) => {
+    const { canceled, filePath } = filename;
+    if (!canceled) {
+      saveAs(data, filePath, "xml");
+    }
+  });
 }
 
 /**
@@ -211,68 +222,17 @@ function load_by_url(uri) {
 }
 
 // TODO: edit the function to run the make file
-function uploadCode(callback) {
-  var url = "http://127.0.0.1:3600/";
-  var method = "GET";
-  // You REALLY want async = true.
-  // Otherwise, it'll block ALL execution waiting for server response.
-  var async = true;
-  // var request = new XMLHttpRequest();
-
-  // request.onreadystatechange = function () {
-  //   if (request.readyState != 4) {
-  //     return;
-  //   }
-
-  //   spinner.stop();
-
-  //   var status = parseInt(request.status); // HTTP response status, e.g., 200 for "200 OK"
-  //   var errorInfo = null;
-  //   switch (status) {
-  //     case 200:
-  //       break;
-  //     case 0:
-  //       errorInfo =
-  //         "code 0\n\nCould not connect to server at " +
-  //         url +
-  //         ".  Is the local web server running?";
-  //       break;
-  //     case 400:
-  //       errorInfo =
-  //         "code 400\n\nBuild failed - probably due to invalid source code.  Make sure that there are no missing connections in the blocks.";
-  //       break;
-  //     case 500:
-  //       errorInfo =
-  //         "code 500\n\nUpload failed.  Is the USBASP connected to USB port?";
-  //       break;
-  // case 501:
-  //   errorInfo =
-  //     "code 501\n\nUpload failed.  Is 'ino' installed and in your path?  This only works on Mac OS X and Linux at this time.";
-  //   break;
-  // default:
-  //   errorInfo = "code " + status + "\n\nUnknown error.";
-  //   break;
-  //   }
-
-  //   callback(status, errorInfo);
-  // };
-
-  // request.open(method, url, async);
-  // request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-  // request.send(code);
-}
-
 //? liolah
 function uploadClick() {
   var code = Blockly.AVR.workspaceToCode();
-  saveAs(code, `blockxy_temp` + ".c");
+  ipcRenderer.send("upload", code);
   alert("Ready to upload to Atmega32A.");
 
-  uploadCode(function (status, errorInfo) {
-    if (status == 200) {
-      alert("Program uploaded ok");
-    } else {
-      alert("Error uploading program: " + errorInfo);
-    }
-  });
+  // uploadCode(function (status, errorInfo) {
+  //   if (status == 200) {
+  //     alert("Program uploaded ok");
+  //   } else {
+  //     alert("Error uploading program: " + errorInfo);
+  //   }
+  // });
 }
