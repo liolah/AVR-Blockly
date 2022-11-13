@@ -64,9 +64,9 @@ function renderContent() {
     xmlTextarea.value = xmlText;
     xmlTextarea.focus();
   } else if (content.id == "content_avr") {
-    //content.innerHTML = Blockly.AVR.workspaceToCode();
+    //content.innerHTML = Blockly.AVR.workspaceToCode(Blockly.getMainWorkspace());
     var avrTextarea = document.getElementById("content_avr");
-    avrTextarea.value = Blockly.AVR.workspaceToCode();
+    avrTextarea.value = Blockly.AVR.workspaceToCode(Blockly.getMainWorkspace());
     avrTextarea.focus();
   }
 }

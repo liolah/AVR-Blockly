@@ -17226,7 +17226,10 @@ Blockly.WorkspaceSvg.prototype.preloadAudio_ = function () {
     var b = this.SOUNDS_[a];
     b.volume = 0.01;
     b.play();
-    b.pause();
+    // Liolah: settimeout used to avoid DOMException: The play() request was interrupted by a call to pause().
+    setTimeout(() => {
+      b.pause();
+    }, 500);
     if (goog.userAgent.IPAD || goog.userAgent.IPHONE) break;
   }
 };

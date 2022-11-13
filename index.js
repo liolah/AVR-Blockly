@@ -1,5 +1,3 @@
-const { ipcRenderer, dialog } = require("@electron/remote");
-
 /**
  * Execute the user's code.
  * Just a quick and dirty eval.  No checks for infinite loops, etc.
@@ -33,30 +31,13 @@ function restore_blocks() {
   }
 }
 
-// liolah
-function saveAs(code, name, extension) {
-  ipcRenderer.send("saveAs", { code, name, extension });
-}
-
 /**
  * Save AVR generated code to local file.
  */
 // Edit to send the code to mainIPC and save it to location
 function saveCode() {
-  console.log("save as called");
-  let options = {
-    title: "Save",
-    defaultPath: "Test",
-    buttonLabel: "Save as",
-    filters: [{ name: "All Files", extensions: ["*"] }],
-  };
-  dialog.showSaveDialog(options).then((filename) => {
-    const { canceled, filePath } = filename;
-    if (!canceled) {
-      var code = Blockly.AVR.workspaceToCode();
-      saveAs(code, filePath, "c");
-    }
-  });
+  var code = Blockly.AVR.workspaceToCode(Blockly.getMainWorkspace());
+  window.api.saveAs(code, "c");
 }
 
 /**
@@ -65,21 +46,9 @@ function saveCode() {
  */
 // Edit to send the code to mainIPC and save it to location
 function save() {
-  console.log("save called");
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   var data = Blockly.Xml.domToText(xml);
-  let options = {
-    title: "Save",
-    defaultPath: "Test",
-    buttonLabel: "Save as",
-    filters: [{ name: "All Files", extensions: ["*"] }],
-  };
-  dialog.showSaveDialog(options).then((filename) => {
-    const { canceled, filePath } = filename;
-    if (!canceled) {
-      saveAs(data, filePath, "xml");
-    }
-  });
+  window.api.saveAs(data, "xml");
 }
 
 /**
@@ -224,7 +193,7 @@ function load_by_url(uri) {
 // TODO: edit the function to run the make file
 //? liolah
 function uploadClick() {
-  var code = Blockly.AVR.workspaceToCode();
+  var code = Blockly.AVR.workspaceToCode(Blockly.getMainWorkspace());
   ipcRenderer.send("upload", code);
   alert("Ready to upload to Atmega32A.");
 

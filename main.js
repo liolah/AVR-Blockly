@@ -1,5 +1,4 @@
-const { BrowserWindow, app, ipcMain } = require("electron");
-require("@electron/remote/main").initialize();
+const { BrowserWindow, app, ipcMain, dialog } = require("electron");
 const path = require("path");
 const fs = require("fs");
 
@@ -10,25 +9,14 @@ function createMainWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      enableRemoteModule: true,
+      // nodeIntegration: false,
+      // contextIsolation: true,
+      // enableRemoteModule: false, // Defaults
+      preload: path.join(__dirname, "preload.js"),
     },
   });
-  // mainWindow.loadURL(`http://localhost:3600/`);
-  // mainWindow.on("close", (event) => {
-    //   mainWindow = null;
-    // });
-    // mainWindow.loadURL(
-  //   url.format({
-    //     pathname: path.join(__dirname, "\\index.html"),
-    //     protocol: "file:",
-    //     slashes: true,
-    //   })
-    // );
-    require("@electron/remote/main").enable(mainWindow.webContents);
-    mainWindow.loadFile("index.html");
-  }
+  mainWindow.loadFile("index.html");
+}
 
 app.on("ready", createMainWindow);
 // app.whenReady().then(createMainWindow);
@@ -47,10 +35,24 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.on("saveAs", (event, args) => {
-  console.log(args);
-  // fs.writeFile(`${args.fileName}.${args.extension}`, args.code, {
-  //   encoding: "utf8",
-  // });
-  // event.sender.send("saveAs-reply", 200);
+ipcMain.handle("saveAs", (event, code, extension) => {
+  let options = {
+    title: "Save",
+    defaultPath: `Blockxy.${extension}`,
+    buttonLabel: "Save",
+    filters: [
+      { name: "C code", extensions: ["c"] },
+      { name: "Project file", extensions: ["xml"] },
+      { name: "All Files", extensions: ["*"] },
+    ],
+  };
+  dialog.showSaveDialog(options).then((filename) => {
+    const { canceled, filePath } = filename;
+    if (!canceled && filePath) {
+      fs.writeFile(filePath, code, "utf8", (err) => {
+        if (err) throw err;
+        console.log(`${filePath} has been saved!`);
+      });
+    }
+  });
 });
