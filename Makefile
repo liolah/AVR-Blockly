@@ -1,19 +1,19 @@
 MCU=atmega32
 # MCU=avr5
 CORE=m32
-F_CPU=1000000
+F_CPU=16000000
 # F_CPU=16000000
 CC=avr-gcc
 OBJCOPY=avr-objcopy
 CFLAGS=-Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} -I.
 # CFLAGS=-std=c99 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} -I.
-TARGET=AVR_C_Test
-SRCS=AVR_C_Test.c
+TARGET=BlocklyTemp
+SRCS=BlocklyTemp.c
 
 all:
 	${CC} ${CFLAGS} -o ${TARGET}.bin ${SRCS}
 	${OBJCOPY} -j .text -j .data -O ihex ${TARGET}.bin ${TARGET}.hex
-	make flash
+# make flash
 	make clean
 	
 flash: ${TARGET}.hex
@@ -23,7 +23,7 @@ flash: ${TARGET}.hex
 
 clean:
 	rm ${TARGET}.bin
-# rm -f *.bin *.hex
+	rm -f *.bin *.hex *.c
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------------
 # avrdude –c usbasp –p m32 –u –U flash:w:io.hex
