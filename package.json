@@ -1,6 +1,6 @@
 {
-  "name": "blockxy-app",
-  "version": "1.2.0",
+  "name": "Mega Blocks X32",
+  "version": "1.0.0",
   "description": "Block based programming app for AVR microcontrollers",
   "main": "main.js",
   "scripts": {

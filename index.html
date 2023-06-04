@@ -1,17 +1,18 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Blockxy</title>
+    <title>Mega Blocks x32</title>
     <script type="text/javascript" src="./index.js" defer></script>
     <script type="text/javascript" src="./js/blockly.js"></script>
-    <script type="text/javascript" src="./js/blocks.js"></script>
-    <script type="text/javascript" src="./js/avr.js"></script>
+    <script type="module" src="./js/blocks.js"></script>
+    <script type="module" src="./js/avr.js"></script>
     <script type="text/javascript" src="./js/Blob.js"></script>
     <script type="text/javascript" src="./js/spin.js"></script>
     <script type="text/javascript" src="./js/main.js"></script>
     <script type="text/javascript" src="./msg/js/en.js"></script>
     <link rel="stylesheet" href="./css/style.css" />
   </head>
+
   <body onload="init()">
     <table height="100%" width="100%" style="margin-top: 15px">
       <tr>
@@ -28,9 +29,7 @@
             <td class="tabmin">&nbsp;</td>
             <td id="tab_python" class="taboff" onclick="tabClick(this.id)">Python</td>
             <td class="tabmin">&nbsp;</td-->
-              <td id="tab_avr" class="taboff" onclick="tabClick('avr')">
-                AVR
-              </td>
+              <td id="tab_avr" class="taboff" onclick="tabClick('avr')">AVR</td>
               <td class="tabmin">&nbsp;</td>
               <td
                 id="tab_xml"
@@ -66,12 +65,7 @@
     </table>
     <div id="content_blocks" class="content"></div>
     <!-- Edit code editor here - liolah -->
-    <textarea
-      id="content_avr"
-      class="content"
-      readonly
-      wrap="off"
-    ></textarea>
+    <textarea id="content_avr" class="content" readonly wrap="off"></textarea>
     <textarea id="content_xml" readonly class="content" wrap="off"></textarea>
 
     <xml id="toolbox" style="display: none">
@@ -121,36 +115,39 @@
       <category name="Variables" custom="VARIABLE"></category>
       <category name="Functions" custom="PROCEDURE"></category>
       <sep></sep>
+      <category name="Drivers:">
+      </category>
+      <sep></sep>
       <category name="Input/Output">
         <block type="inout_highlow"></block>
         <block type="inout_digital_write"></block>
-        <!-- Disabled by liolah -->
-        <!-- <block type="inout_digital_read"></block>
-      <block type="inout_analog_write">
-        <value name="NUM">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-      </block>
-      <block type="inout_analog_read"></block>
-      <block type="serial_print">
-        <value name="CONTENT">
-          <block type="text">
-            <field name="TEXT"></field>
-          </block>
-        </value>
-      </block>
-      <block type="inout_tone">
-        <value name="NUM">
-          <block type="math_number">
-            <field name="NUM">440</field>
-          </block>
-        </value>
-      </block>
-      <block type="inout_notone"></block>
-      <block type="inout_buildin_led"></block> -->
+        <block type="inout_digital_read"></block>
+        <block type="inout_analog_write">
+          <value name="NUM">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="inout_analog_read"></block>
+        <block type="serial_print">
+          <value name="CONTENT">
+            <block type="text">
+              <field name="TEXT"></field>
+            </block>
+          </value>
+        </block>
+        <block type="inout_tone">
+          <value name="NUM">
+            <block type="math_number">
+              <field name="NUM">440</field>
+            </block>
+          </value>
+        </block>
+        <block type="inout_notone"></block>
+        <block type="inout_buildin_led"></block>
       </category>
+      <!-- Disabled by liolah -->
       <!-- Disabled categories - liolah -->
       <!-- <category name="Servo">
       <block type="servo_move">

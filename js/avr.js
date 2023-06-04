@@ -1,4 +1,46 @@
+// this files contains the functions that defines the behavior of the blocks
 "use strict";
+
+//***************************************************************************************
+// Importing the drivers and libs
+import libs from "../JS_drivers/libraries.js";
+import inits from "../JS_drivers/modulesInitializations.js";
+import driversPrototypes from "../JS_drivers/driversPrototypes.js";
+
+// Helper functions to make it easier and more comprehensible to import and generate the code
+
+// Adds a macro definition to the definitions list
+function includeLib(lib) {
+    Blockly.AVR.definitions_[lib] = libs[lib];
+}
+
+// Adds a module initialization to the setup list
+function initModule(module) {
+    Blockly.AVR.setups_[module] = inits[module];
+}
+
+// Extracts a parameter from a block
+function extractParameter(object, paramName) {
+    const extractedValue = Blockly.AVR.valueToCode(
+        object,
+        paramName,
+        Blockly.AVR.ORDER_ATOMIC
+    );
+    if (extractedValue === "") return undefined;
+    return extractedValue;
+}
+
+// Extracts the parameters and passes them to the driver function. Returns the complete function call string
+// Arguments must be passed in order
+function generateDriverFunctionCall(functionName, object, ...args) {
+    const params = Array.from(args).map((arg) => {
+        return extractParameter(object, arg);
+    });
+
+    return driversPrototypes[functionName](...params) + '\n';
+}
+//***************************************************************************************
+
 // changed arduino to avr - liolah
 Blockly.AVR = new Blockly.Generator("AVR");
 Blockly.AVR.addReservedWords(
@@ -22,7 +64,7 @@ Blockly.AVR.ORDER_ASSIGNMENT = 14;
 Blockly.AVR.ORDER_NONE = 99;
 
 // Edited by liolah
-var profile = {
+export let profile = {
     atmega32a: {
         description: "Atmega32A AVR board",
         digital: [
@@ -110,7 +152,7 @@ Blockly.AVR.init = function(a) {
 
 // Edited the finish function - liolah
 Blockly.AVR.finish = function(code) {
-    Blockly.AVR.definitions_.define_cpu_frequency = "#define F_CPU 1000000\n";
+    // Blockly.AVR.definitions_.define_cpu_frequency = "#define F_CPU 16000000";
     // Blockly.AVR.definitions_.define_avr_lib = "#include <avr/io.h>\n";
     code = "  " + code.replace(/\n/g, "\n  ");
     code = code.replace(/\n\s+$/, "\n");
@@ -124,11 +166,11 @@ Blockly.AVR.finish = function(code) {
         setup.match(/^#include/) ? includes.push(setup) : definitions.push(setup);
     }
     setup = [];
-    for (macro in Blockly.AVR.setups_)
-        setup.push(Blockly.AVR.setups_[macro]);
+    for (macro in Blockly.AVR.setups_) setup.push(Blockly.AVR.setups_[macro]);
     return (
         (
-            "#include <avr/io.h>\n" +
+            "#include <avr/io.h>\n\n" +
+            "#define F_CPU 16000000\n\n" +
             includes.join("\n") +
             "\n\n" +
             definitions.join("\n") +
@@ -168,21 +210,29 @@ Blockly.AVR.scrub_ = function(a, b) {
     e = Blockly.AVR.blockToCode(e);
     return c + b + e;
 };
+
 Blockly.AVR.base = {};
 
 // liolah
-Blockly.AVR.base_delay = function() {
-    Blockly.AVR.definitions_.define_base_delay = "#include <util/delay.h>\n";
-    return (
-        "_delay_ms(" +
-        (Blockly.AVR.valueToCode(
-            this,
-            "DELAY_TIME",
-            Blockly.AVR.ORDER_ATOMIC
-        ) || "1000") +
-        ");\n"
-    );
-};
+// Modified function
+// Blockly.AVR.base_delay = function() {
+//     includeLib("delay");
+//     return generateDriverFunctionCall("delay", this, "DELAY_TIME");
+// };
+
+//? Original function
+// Blockly.AVR.base_delay = function() {
+//     Blockly.AVR.definitions_.define_base_delay = "#include <util/delay.h>\n";
+//     return (
+//         "_delay_ms(" +
+//         (Blockly.AVR.valueToCode(
+//             this,
+//             "DELAY_TIME",
+//             Blockly.AVR.ORDER_ATOMIC
+//         ) || "1000") +
+//         ");\n"
+//     );
+// };
 
 Blockly.AVR.base_map = function() {
     var a = Blockly.AVR.valueToCode(this, "NUM", Blockly.AVR.ORDER_NONE),
@@ -243,11 +293,7 @@ Blockly.AVR.inout_highlow = function() {
 };
 Blockly.AVR.servo_move = function() {
     var a = this.getFieldValue("PIN"),
-        b = Blockly.AVR.valueToCode(
-            this,
-            "DEGREE",
-            Blockly.AVR.ORDER_ATOMIC
-        );
+        b = Blockly.AVR.valueToCode(this, "DEGREE", Blockly.AVR.ORDER_ATOMIC);
     Blockly.AVR.definitions_.define_servo = "#include <Servo.h>\n";
     Blockly.AVR.definitions_["var_servo" + a] = "Servo servo_" + a + ";\n";
     Blockly.AVR.setups_["setup_servo_" + a] =
@@ -264,11 +310,7 @@ Blockly.AVR.servo_read_degrees = function() {
 };
 Blockly.AVR.serial_print = function() {
     var a =
-        Blockly.AVR.valueToCode(
-            this,
-            "CONTENT",
-            Blockly.AVR.ORDER_ATOMIC
-        ) || "0";
+        Blockly.AVR.valueToCode(this, "CONTENT", Blockly.AVR.ORDER_ATOMIC) || "0";
     Blockly.AVR.setups_["setup_serial_" + profile["default"].serial] =
         "Serial.begin(" + profile["default"].serial + ");\n";
     return "Serial.println(" + a + ");\n";
@@ -280,22 +322,14 @@ Blockly.AVR.controls_for = function() {
             Blockly.Variables.NAME_TYPE
         ),
         b =
-        Blockly.AVR.valueToCode(
-            this,
-            "FROM",
-            Blockly.AVR.ORDER_ASSIGNMENT
-        ) || "0",
+        Blockly.AVR.valueToCode(this, "FROM", Blockly.AVR.ORDER_ASSIGNMENT) ||
+        "0",
         c =
-        Blockly.AVR.valueToCode(
-            this,
-            "TO",
-            Blockly.AVR.ORDER_ASSIGNMENT
-        ) || "0",
+        Blockly.AVR.valueToCode(this, "TO", Blockly.AVR.ORDER_ASSIGNMENT) || "0",
         d = Blockly.AVR.statementToCode(this, "DO");
     Blockly.AVR.INFINITE_LOOP_TRAP &&
         (d =
-            Blockly.AVR.INFINITE_LOOP_TRAP.replace(/%1/g, "'" + this.id + "'") +
-            d);
+            Blockly.AVR.INFINITE_LOOP_TRAP.replace(/%1/g, "'" + this.id + "'") + d);
     if (b.match(/^-?\d+(\.\d+)?$/) && c.match(/^-?\d+(\.\d+)?$/))
         var e = parseFloat(b) <= parseFloat(c),
             d =
@@ -370,8 +404,7 @@ Blockly.AVR.controls_whileUntil = function() {
         c = Blockly.AVR.statementToCode(this, "DO");
     Blockly.AVR.INFINITE_LOOP_TRAP &&
         (c =
-            Blockly.AVR.INFINITE_LOOP_TRAP.replace(/%1/g, "'" + this.id + "'") +
-            c);
+            Blockly.AVR.INFINITE_LOOP_TRAP.replace(/%1/g, "'" + this.id + "'") + c);
     a && (b = "!" + b);
     return "while (" + b + ") {\n" + c + "}\n";
 };
@@ -379,8 +412,7 @@ Blockly.AVR.grove = {};
 Blockly.AVR.grove_led = function() {
     var a = this.getFieldValue("PIN"),
         b = this.getFieldValue("STAT");
-    Blockly.AVR.setups_["setup_green_led_" + a] =
-        "pinMode(" + a + ", OUTPUT);";
+    Blockly.AVR.setups_["setup_green_led_" + a] = "pinMode(" + a + ", OUTPUT);";
     return "digitalWrite(" + a + "," + b + ");\n";
 };
 Blockly.AVR.grove_button = function() {
@@ -396,8 +428,7 @@ Blockly.AVR.grove_rotary_angle = function() {
 };
 Blockly.AVR.grove_tilt_switch = function() {
     var a = this.getFieldValue("PIN");
-    Blockly.AVR.setups_["setup_tilt_switch_" + a] =
-        "pinMode(" + a + ", INPUT);";
+    Blockly.AVR.setups_["setup_tilt_switch_" + a] = "pinMode(" + a + ", INPUT);";
     return ["digitalRead(" + a + ")", Blockly.AVR.ORDER_ATOMIC];
 };
 Blockly.AVR.grove_piezo_buzzer = function() {
@@ -442,23 +473,14 @@ var _get_next_pin = function(a) {
 Blockly.AVR.grove_serial_lcd_print = function() {
     var a = this.getFieldValue("PIN"),
         b =
-        Blockly.AVR.valueToCode(
-            this,
-            "TEXT",
-            Blockly.AVR.ORDER_UNARY_POSTFIX
-        ) || "''",
+        Blockly.AVR.valueToCode(this, "TEXT", Blockly.AVR.ORDER_UNARY_POSTFIX) ||
+        "''",
         c =
-        Blockly.AVR.valueToCode(
-            this,
-            "TEXT2",
-            Blockly.AVR.ORDER_UNARY_POSTFIX
-        ) || "''",
+        Blockly.AVR.valueToCode(this, "TEXT2", Blockly.AVR.ORDER_UNARY_POSTFIX) ||
+        "''",
         d =
-        Blockly.AVR.valueToCode(
-            this,
-            "DELAY_TIME",
-            Blockly.AVR.ORDER_ATOMIC
-        ) || "1000";
+        Blockly.AVR.valueToCode(this, "DELAY_TIME", Blockly.AVR.ORDER_ATOMIC) ||
+        "1000";
     Blockly.AVR.definitions_.define_seriallcd = "#include <SerialLCD.h>\n";
     Blockly.AVR.definitions_.define_softwareserial =
         "#include <SoftwareSerial.h>\n";
@@ -586,8 +608,7 @@ Blockly.AVR.grove_rgb_led = function() {
     Blockly.AVR.setups_["setup_input_" + b] = "pinMode(" + b + ", OUTPUT);";
     Blockly.AVR.definitions_.define_uint8 = "#define uint8 unsigned char";
     Blockly.AVR.definitions_.define_uint16 = "#define uint16 unsigned int";
-    Blockly.AVR.definitions_.define_uint32 =
-        "#define uint32 unsigned long int";
+    Blockly.AVR.definitions_.define_uint32 = "#define uint32 unsigned long int";
     Blockly.AVR.definitions_["define_clkproduce_" + a] =
         "void ClkProduce_" +
         a +
@@ -710,11 +731,8 @@ Blockly.AVR.controls_if = function() {
     for (
         var a = 0,
             b =
-            Blockly.AVR.valueToCode(
-                this,
-                "IF" + a,
-                Blockly.AVR.ORDER_NONE
-            ) || "false",
+            Blockly.AVR.valueToCode(this, "IF" + a, Blockly.AVR.ORDER_NONE) ||
+            "false",
             c = Blockly.AVR.statementToCode(this, "DO" + a),
             d = "if (" + b + ") {\n" + c + "\n}",
             a = 1; a <= this.elseifCount_; a++
@@ -751,9 +769,7 @@ Blockly.AVR.logic_compare.OPERATORS = {
 Blockly.AVR.logic_operation = function() {
     var a = "AND" == this.getFieldValue("OP") ? "&&" : "||",
         b =
-        "&&" == a ?
-        Blockly.AVR.ORDER_LOGICAL_AND :
-        Blockly.AVR.ORDER_LOGICAL_OR,
+        "&&" == a ? Blockly.AVR.ORDER_LOGICAL_AND : Blockly.AVR.ORDER_LOGICAL_OR,
         c = Blockly.AVR.valueToCode(this, "A", b) || "false",
         d = Blockly.AVR.valueToCode(this, "B", b) || "false";
     return [c + " " + a + " " + d, b];
@@ -774,10 +790,7 @@ Blockly.AVR.logic_null = function() {
 Blockly.AVR.math = {};
 Blockly.AVR.math_number = function() {
     var a = window.parseFloat(this.getFieldValue("NUM"));
-    return [
-        a,
-        0 > a ? Blockly.AVR.ORDER_UNARY_PREFIX : Blockly.AVR.ORDER_ATOMIC,
-    ];
+    return [a, 0 > a ? Blockly.AVR.ORDER_UNARY_PREFIX : Blockly.AVR.ORDER_ATOMIC];
 };
 Blockly.AVR.math_arithmetic = function() {
     var a = this.getFieldValue("OP"),
@@ -786,9 +799,7 @@ Blockly.AVR.math_arithmetic = function() {
         b = b[1],
         c = Blockly.AVR.valueToCode(this, "A", b) || "0",
         d = Blockly.AVR.valueToCode(this, "B", b) || "0";
-    return a ?
-        [c + a + d, b] :
-        ["Math.pow(" + c + ", " + d + ")", Blockly.AVR.ORDER_UNARY_POSTFIX];
+    return a ? [c + a + d, b] : ["Math.pow(" + c + ", " + d + ")", Blockly.AVR.ORDER_UNARY_POSTFIX];
 };
 Blockly.AVR.math_arithmetic.OPERATORS = {
     ADD: [" + ", Blockly.AVR.ORDER_ADDITIVE],
@@ -806,11 +817,8 @@ Blockly.AVR.procedures_defreturn = function() {
         b = Blockly.AVR.statementToCode(this, "STACK");
     Blockly.AVR.INFINITE_LOOP_TRAP &&
         (b =
-            Blockly.AVR.INFINITE_LOOP_TRAP.replace(/%1/g, "'" + this.id + "'") +
-            b);
-    var c =
-        Blockly.AVR.valueToCode(this, "RETURN", Blockly.AVR.ORDER_NONE) ||
-        "";
+            Blockly.AVR.INFINITE_LOOP_TRAP.replace(/%1/g, "'" + this.id + "'") + b);
+    var c = Blockly.AVR.valueToCode(this, "RETURN", Blockly.AVR.ORDER_NONE) || "";
     c && (c = "  return " + c + ";\n");
     for (
         var d = c ? "int" : "void", e = [], f = 0; f < this.arguments_.length; f++
@@ -837,11 +845,8 @@ Blockly.AVR.procedures_callreturn = function() {
             c = 0; c < this.arguments_.length; c++
     )
         b[c] =
-        Blockly.AVR.valueToCode(
-            this,
-            "ARG" + c,
-            Blockly.AVR.ORDER_NONE
-        ) || "null";
+        Blockly.AVR.valueToCode(this, "ARG" + c, Blockly.AVR.ORDER_NONE) ||
+        "null";
     return [a + "(" + b.join(", ") + ")", Blockly.AVR.ORDER_UNARY_POSTFIX];
 };
 Blockly.AVR.procedures_callnoreturn = function() {
@@ -854,29 +859,20 @@ Blockly.AVR.procedures_callnoreturn = function() {
             c = 0; c < this.arguments_.length; c++
     )
         b[c] =
-        Blockly.AVR.valueToCode(
-            this,
-            "ARG" + c,
-            Blockly.AVR.ORDER_NONE
-        ) || "null";
+        Blockly.AVR.valueToCode(this, "ARG" + c, Blockly.AVR.ORDER_NONE) ||
+        "null";
     return a + "(" + b.join(", ") + ");\n";
 };
 Blockly.AVR.procedures_ifreturn = function() {
     var a =
         "if (" +
-        (Blockly.AVR.valueToCode(
-            this,
-            "CONDITION",
-            Blockly.AVR.ORDER_NONE
-        ) || "false") +
+        (Blockly.AVR.valueToCode(this, "CONDITION", Blockly.AVR.ORDER_NONE) ||
+            "false") +
         ") {\n";
     if (this.hasReturnValue_)
         var b =
-            Blockly.AVR.valueToCode(
-                this,
-                "VALUE",
-                Blockly.AVR.ORDER_NONE
-            ) || "null",
+            Blockly.AVR.valueToCode(this, "VALUE", Blockly.AVR.ORDER_NONE) ||
+            "null",
             a = a + ("  return " + b + ";\n");
     else a += "  return;\n";
     return a + "}\n";
@@ -901,11 +897,8 @@ Blockly.AVR.variables_get = function() {
 Blockly.AVR.variables_declare = function() {
     this.getFieldValue("TYPE");
     var a =
-        Blockly.AVR.valueToCode(
-            this,
-            "VALUE",
-            Blockly.AVR.ORDER_ASSIGNMENT
-        ) || "0",
+        Blockly.AVR.valueToCode(this, "VALUE", Blockly.AVR.ORDER_ASSIGNMENT) ||
+        "0",
         b = Blockly.AVR.variableDB_.getName(
             this.getFieldValue("VAR"),
             Blockly.Variables.NAME_TYPE
@@ -915,11 +908,7 @@ Blockly.AVR.variables_declare = function() {
 };
 Blockly.AVR.variables_set = function() {
     var a =
-        Blockly.AVR.valueToCode(
-            this,
-            "VALUE",
-            Blockly.AVR.ORDER_ASSIGNMENT
-        ) || "0";
+        Blockly.AVR.valueToCode(this, "VALUE", Blockly.AVR.ORDER_ASSIGNMENT) || "0";
     return (
         Blockly.AVR.variableDB_.getName(
             this.getFieldValue("VAR"),

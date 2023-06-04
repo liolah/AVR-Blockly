@@ -1,6 +1,9 @@
+// this files contains the functions that defines the appearance of the blocks
 "use strict";
 
 Blockly.Blocks.base = {};
+
+import { profile } from "./avr.js";
 
 // liolah
 Blockly.Blocks.base_delay = {
