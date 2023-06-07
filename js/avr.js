@@ -6,6 +6,7 @@
 import libs from "../JS_drivers/libraries.js";
 import inits from "../JS_drivers/modulesInitializations.js";
 import driversPrototypes from "../JS_drivers/driversPrototypes.js";
+import modulesInitializations from "../JS_drivers/modulesInitializations.js";
 
 // Helper functions to make it easier and more comprehensible to import and generate the code
 
@@ -15,8 +16,13 @@ function includeLib(lib) {
 }
 
 // Adds a module initialization to the setup list
-function initModule(module) {
-  Blockly.AVR.setups_[module.name] = inits[module].val;
+function initModule(module, nameCode, ...args) {
+  const a = Array.from(args);
+  const c = a.slice(0, nameCode);
+  Blockly.AVR.setups_[`${module.name}_${c}`] = generateDriverFunctionCall(
+    module,
+    ...args
+  );
 }
 
 // Extracts a parameter from a block
@@ -229,11 +235,6 @@ Blockly.AVR.base_delay = function () {
   return generateDriverFunctionCall(driversPrototypes.delay.delay_ms, params);
 };
 
-Blockly.AVR.h = function () {
-  const params = extractParametersFromFields(this, "HAHA");
-  return generateDriverFunctionCall(driversPrototypes.test, params);
-};
-
 //? Original function
 // Blockly.AVR.base_delay = function() {
 //     Blockly.AVR.definitions_.define_base_delay = "#include <util/delay.h>\n";
@@ -261,22 +262,25 @@ Blockly.AVR.inout_buildin_led = function () {
 
 // Test code output - liolah
 Blockly.AVR.inout_digital_write = function () {
-  var pin = this.getFieldValue("PIN"),
-    port = this.getFieldValue("PORT"),
-    state = this.getFieldValue("STAT");
-  Blockly.AVR.setups_[
-    "setup_output_" + port + pin
-  ] = `DDR${port} |= ( 1 << ${pin} );`;
-  return state == "HIGH"
-    ? `PORT${port} |= ( 1 << ${pin} );`
-    : `PORT${port} &= ~( 1 << ${pin} );`;
+    const params = extractParametersFromFields(this, "PIN", "PORT", "STAT");
+    const lessParams = params.slice(0, params.length - 1);
+  initModule(modulesInitializations.dio.DIO_pin_init, 2, ...lessParams, "OUT");
+  return generateDriverFunctionCall(
+    driversPrototypes.dio.DIO_pin_write,
+    ...params
+  );
 };
 
 Blockly.AVR.inout_digital_read = function () {
-  var a = this.getFieldValue("PIN");
-  Blockly.AVR.setups_["setup_input_" + a] = "pinMode(" + a + ", INPUT);";
-  return ["digitalRead(" + a + ")", Blockly.AVR.ORDER_ATOMIC];
+  const params = extractParametersFromFields(this, "PIN", "PORT");
+  initModule(modulesInitializations.dio.DIO_pin_init, 2, ...params, "IN");
+  return generateDriverFunctionCall(
+    driversPrototypes.dio.DIO_pin_read,
+    ...params,
+    "IN"
+  );
 };
+
 Blockly.AVR.inout_analog_write = function () {
   var a = this.getFieldValue("PIN"),
     b = Blockly.AVR.valueToCode(this, "NUM", Blockly.AVR.ORDER_ATOMIC);

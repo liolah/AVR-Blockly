@@ -86,28 +86,10 @@ Blockly.Blocks.inout_digital_read = {
     this.setColour(230);
     this.appendDummyInput()
       .appendField("DigitalRead PIN#")
-      .appendField(
-        new Blockly.FieldDropdown(profile["default"].digital),
-        "PIN"
-      );
+      .appendField(new Blockly.FieldDropdown(profile["default"].pins), "PIN")
+      .appendField("on PORT#")
+      .appendField(new Blockly.FieldDropdown(profile["default"].ports), "PORT");
     this.setOutput(!0, "Boolean");
-    this.setTooltip("");
-  },
-};
-
-Blockly.Blocks.h = {
-  helpUrl: "",
-  init: function () {
-    this.setColour(300);
-    this.appendDummyInput()
-      .appendField("Hello! I am a test!")
-      .appendField(
-        new Blockly.FieldDropdown([
-          ["Lol", "lol"],
-          ["Lmao", "dfaskolfasdjiod"],
-        ]),
-        "HAHA"
-      );
     this.setTooltip("");
   },
 };
