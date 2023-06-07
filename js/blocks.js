@@ -74,8 +74,8 @@ Blockly.Blocks.inout_digital_write = {
         ]),
         "STAT"
       );
-    this.setPreviousStatement(!0, null);
-    this.setNextStatement(!0, null);
+    this.setPreviousStatement(1, null);
+    this.setNextStatement(1, null);
     this.setTooltip("set the output state of a specific pin");
   },
 };
@@ -94,6 +94,24 @@ Blockly.Blocks.inout_digital_read = {
     this.setTooltip("");
   },
 };
+
+Blockly.Blocks.h = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(300);
+    this.appendDummyInput()
+      .appendField("Hello! I am a test!")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["Lol", "lol"],
+          ["Lmao", "dfaskolfasdjiod"],
+        ]),
+        "HAHA"
+      );
+    this.setTooltip("");
+  },
+};
+
 Blockly.Blocks.inout_analog_write = {
   helpUrl: "",
   init: function () {
