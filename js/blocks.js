@@ -36,6 +36,132 @@ Blockly.Blocks.base_map = {
     this.setTooltip("Re-maps a number from [0-1024] to another.");
   },
 };
+Blockly.Blocks.temperature_read = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(350);
+    this.appendDummyInput()
+      .appendField("Read temperature level ")
+      this.setOutput(!0, "Boolean");
+    this.setTooltip("Read brightness level from a sensor");
+  },
+};
+Blockly.Blocks.brightness_read = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(350);
+    this.appendDummyInput()
+      .appendField("Read brightness level ")
+      this.setOutput(!0, "Boolean");
+    this.setTooltip("Read brightness level from a sensor");
+  },
+};
+Blockly.Blocks.sound_level_read = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(350);
+    this.appendDummyInput()
+      .appendField("Read sound level ")
+      this.setOutput(!0, "Boolean");
+    this.setTooltip("Read the sound level");
+  },
+};
+Blockly.Blocks.external_sensor_read = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(350);
+    this.appendDummyInput()
+      .appendField("Read external sensor ")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["1", "1"],
+          ["2", "2"],
+          ["3", "3"],
+          ["4", "4"],
+        ]),
+        "sensors"
+      );
+      this.setOutput(!0, "Boolean");
+    this.setTooltip("Read a value from an external sensor");
+  },
+};
+Blockly.Blocks.buzzer_on = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(350);
+    this.appendDummyInput()
+      .appendField("Turn Buzzer on")
+      this.setOutput(!0, "Boolean");
+    this.setTooltip("Turns the buzzer on");
+  },
+};
+Blockly.Blocks.buzzer_off = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(350);
+    this.appendDummyInput()
+      .appendField("Turn Buzzer off")
+      this.setOutput(!0, "Boolean");
+    this.setTooltip("Turns the buzzer off");
+  },
+};
+Blockly.Blocks.dot_matrix_display_char = {
+  helpUrl: "",
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+      .appendField("Display character")
+      .appendField(new Blockly.FieldTextInput("X"), "CHARACTER")
+      .appendField("on dot matrix");
+    this.setPreviousStatement(!0, null);
+    this.setNextStatement(!0, null);
+    this.setTooltip("Display a character on a dot matrix display");
+  },
+};
+Blockly.Blocks.eight_digit_seven_segment_display = {
+  helpUrl: "",
+  init: function() {
+    this.setColour(270);
+    this.appendDummyInput()
+      .appendField("Display number")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "NUMBER"
+      );
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Display a number on an eight-digit seven-segment display");
+  },
+};
+Blockly.Blocks.EEPROM_write_byte = {
+  helpUrl: "",
+  init: function() {
+    this.setColour(180);
+    this.appendDummyInput()
+      .appendField("Write byte")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "ADDRESS")
+      .appendField("to EEPROM")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "VALUE");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Write a byte to EEPROM at a specific address");
+  },
+};
+Blockly.Blocks.EEPROM_read_byte = {
+  helpUrl: "",
+  init: function() {
+    this.setColour(210);
+    this.appendDummyInput()
+      .appendField("Read byte from EEPROM")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "ADDRESS"
+      );
+    this.setOutput(true, null);
+    this.setTooltip("Read a byte from EEPROM at a specific address");
+  },
+};
+
 
 Blockly.Blocks.inout_buildin_led = {
   helpUrl: "",
@@ -86,10 +212,28 @@ Blockly.Blocks.inout_digital_read = {
     this.setColour(230);
     this.appendDummyInput()
       .appendField("DigitalRead PIN#")
-      .appendField(new Blockly.FieldDropdown(profile["default"].pins), "PIN")
-      .appendField("on PORT#")
-      .appendField(new Blockly.FieldDropdown(profile["default"].ports), "PORT");
+      .appendField(
+        new Blockly.FieldDropdown(profile["default"].digital),
+        "PIN"
+      );
     this.setOutput(!0, "Boolean");
+    this.setTooltip("");
+  },
+};
+
+Blockly.Blocks.h = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(300);
+    this.appendDummyInput()
+      .appendField("Hello! I am a test!")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["Lol", "lol"],
+          ["Lmao", "dfaskolfasdjiod"],
+        ]),
+        "HAHA"
+      );
     this.setTooltip("");
   },
 };
@@ -1794,6 +1938,8 @@ Blockly.Blocks.controls_flow_statements = {
       : this.setWarningText(Blockly.Msg.CONTROLS_FLOW_STATEMENTS_WARNING);
   },
 };
+
+// Example on number input
 Blockly.Blocks.math = {};
 Blockly.Blocks.math.HUE = 230;
 Blockly.Blocks.math_number = {
@@ -2565,6 +2711,8 @@ Blockly.Blocks.procedures_ifreturn = {
       : this.setWarningText(Blockly.Msg.PROCEDURES_IFRETURN_WARNING);
   },
 };
+
+// Text input example
 Blockly.Blocks.texts = {};
 Blockly.Blocks.texts.HUE = 160;
 Blockly.Blocks.text = {

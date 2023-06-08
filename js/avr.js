@@ -6,7 +6,6 @@
 import libs from "../JS_drivers/libraries.js";
 import inits from "../JS_drivers/modulesInitializations.js";
 import driversPrototypes from "../JS_drivers/driversPrototypes.js";
-import modulesInitializations from "../JS_drivers/modulesInitializations.js";
 
 // Helper functions to make it easier and more comprehensible to import and generate the code
 
@@ -16,13 +15,8 @@ function includeLib(lib) {
 }
 
 // Adds a module initialization to the setup list
-function initModule(module, nameCode, ...args) {
-  const a = Array.from(args);
-  const c = a.slice(0, nameCode);
-  Blockly.AVR.setups_[`${module.name}_${c}`] = generateDriverFunctionCall(
-    module,
-    ...args
-  );
+function initModule(module) {
+  Blockly.AVR.setups_[module.name] = inits[module].val;
 }
 
 // Extracts a parameter from a block
@@ -235,6 +229,41 @@ Blockly.AVR.base_delay = function () {
   return generateDriverFunctionCall(driversPrototypes.delay.delay_ms, params);
 };
 
+Blockly.AVR.h = function () {
+  const params = extractParametersFromFields(this, "HAHA");
+  return generateDriverFunctionCall(driversPrototypes.test, params);
+};
+Blockly.AVR.temperature_read = function () {
+  const params = extractParametersFromBlocks(this);
+  return generateDriverFunctionCall(driversPrototypes.analog_sensors.temperature_read, params);
+}
+Blockly.AVR.brightness_read = function () {
+  const params = extractParametersFromBlocks(this);
+  return generateDriverFunctionCall(driversPrototypes.analog_sensors.brightness_read, params);
+}
+Blockly.AVR.sound_level_read = function () {
+  const params = extractParametersFromBlocks(this);
+  return generateDriverFunctionCall(driversPrototypes.analog_sensors.sound_level_read, params);
+}
+Blockly.AVR.external_sensor_read = function () {
+  const params = extractParametersFromFields(this, "sensors");
+  return generateDriverFunctionCall(driversPrototypes.analog_sensors.external_sensor_read, params);
+};
+Blockly.AVR.buzzer_on = function () {
+  const params = extractParametersFromFields(this);
+  return generateDriverFunctionCall(driversPrototypes.buzzer.buzzer_on, params);
+};
+Blockly.AVR.buzzer_off = function () {
+  const params = extractParametersFromFields(this);
+  return generateDriverFunctionCall(driversPrototypes.buzzer.buzzer_off, params);
+};
+Blockly.AVR.dot_matrix_display_char = function () {
+  const params = extractParametersFromFields(this, "CHARACTERS");
+  return generateDriverFunctionCall(driversPrototypes.dot_matrix.dot_matrix_display_char, params);
+};
+
+
+
 //? Original function
 // Blockly.AVR.base_delay = function() {
 //     Blockly.AVR.definitions_.define_base_delay = "#include <util/delay.h>\n";
@@ -262,25 +291,22 @@ Blockly.AVR.inout_buildin_led = function () {
 
 // Test code output - liolah
 Blockly.AVR.inout_digital_write = function () {
-    const params = extractParametersFromFields(this, "PIN", "PORT", "STAT");
-    const lessParams = params.slice(0, params.length - 1);
-  initModule(modulesInitializations.dio.DIO_pin_init, 2, ...lessParams, "OUT");
-  return generateDriverFunctionCall(
-    driversPrototypes.dio.DIO_pin_write,
-    ...params
-  );
+  var pin = this.getFieldValue("PIN"),
+    port = this.getFieldValue("PORT"),
+    state = this.getFieldValue("STAT");
+  Blockly.AVR.setups_[
+    "setup_output_" + port + pin
+  ] = `DDR${port} |= ( 1 << ${pin} );`;
+  return state == "HIGH"
+    ? `PORT${port} |= ( 1 << ${pin} );`
+    : `PORT${port} &= ~( 1 << ${pin} );`;
 };
 
 Blockly.AVR.inout_digital_read = function () {
-  const params = extractParametersFromFields(this, "PIN", "PORT");
-  initModule(modulesInitializations.dio.DIO_pin_init, 2, ...params, "IN");
-  return generateDriverFunctionCall(
-    driversPrototypes.dio.DIO_pin_read,
-    ...params,
-    "IN"
-  );
+  var a = this.getFieldValue("PIN");
+  Blockly.AVR.setups_["setup_input_" + a] = "pinMode(" + a + ", INPUT);";
+  return ["digitalRead(" + a + ")", Blockly.AVR.ORDER_ATOMIC];
 };
-
 Blockly.AVR.inout_analog_write = function () {
   var a = this.getFieldValue("PIN"),
     b = Blockly.AVR.valueToCode(this, "NUM", Blockly.AVR.ORDER_ATOMIC);

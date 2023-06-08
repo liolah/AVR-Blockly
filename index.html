@@ -117,11 +117,70 @@
       <sep></sep>
       <category name="Drivers:">
       </category>
+        <category name="Analog Sensors">
+          <block type="temperature_read"></block>
+          <block type="brightness_read"></block>
+          <block type="sound_level_read"></block>
+          <block type="external_sensor_read"></block>
+        </category>
+        <category name="Buzzer">
+          <block type="buzzer_on"></block>
+          <block type="buzzer_off"></block>
+        </category>
+        <category name="Dot matrix">
+          <block type="dot_matrix_display_char"></block>
+          <block type="eight_digit_seven_segment_display"></block>
+        </category>
+        <category name="EEPROM">
+          <block type="EEPROM_write_byte"></block>
+          <block type="EEPROM_read_byte"></block>
+        </category>
+        <!-- <category name="Four digit seven segment">
+          <block type="four_digits_seven_segment_display_num"></block>
+          <block type="four_digits_seven_segment_display_string"></block>
+          <block type="four_digits_seven_segment_brightness"></block>
+        </category> -->
+        <category name="Keypad">
+          <block type="keypad_getPressedKey"></block>
+        </category>
+        <category name="LCD">
+          <block type="LCD_sendData"></block>
+          <block type="LCD_sendCommand"></block>
+          <block type="LCD_write_string"></block>
+          <block type="LCD_move_cursor_xy"></block>
+          <block type="LCD_write_string_xy"></block>
+          <block type="LCD_clear_screen"></block>
+        </category>
+        <category name="LED">
+          <block type="LED_on"></block>
+          <block type="LED_off"></block>
+          <block type="LED_toggle"></block>
+        </category>
+        <category name="Motor">
+          <block type="motor_on"></block>
+          <block type="motor_off"></block>
+          <block type="servo_move_to_angle"></block>
+        </category>
+        <category name="Port Expander">
+        <block type="port_expander_module_write"></block>
+        <block type="port_expander_module_read"></block>
+        </category>
+        <category name="Relay">
+        <block type="relay_on"></block>
+        <block type="relay_on"></block>
+        <block type="relay_toggle"></block>
+        <block type="SSR_set_brightness"></block>
+        </category>
+        <category name="Seven Segment">
+          <block type="single_digit_seven_segment_show_hex_num"></block>
+        </category>
       <sep></sep>
       <category name="Input/Output">
+        <block type="inout_highlow"></block>
         <block type="inout_digital_write"></block>
+        <block type="h"></block>
         <block type="inout_digital_read"></block>
-        <!-- <block type="inout_analog_write">
+        <block type="inout_analog_write">
           <value name="NUM">
             <block type="math_number">
               <field name="NUM">0</field>
@@ -143,7 +202,7 @@
             </block>
           </value>
         </block>
-        <block type="inout_notone"></block>  -->
+        <block type="inout_notone"></block>
         <block type="inout_buildin_led"></block>
       </category>
       <!-- Disabled by liolah -->

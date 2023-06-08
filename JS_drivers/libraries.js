@@ -11,4 +11,8 @@ export default {
     name: "push_buttons",
     val: '#include "./drivers/HAL/push_button/push_button.h"',
   },
+  bit_manipulation: {
+    name: "bit_manipulation",
+    val: '#include "./drivers/utilities/bit_manipulation.h"',
+  },
 };
