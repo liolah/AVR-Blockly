@@ -45,7 +45,7 @@ function extractParametersFromFields(object, ...params) {
 // Extracts the parameters and passes them to the driver function. Returns the complete function call string
 // Arguments must be passed in order
 function generateDriverFunctionCall(driver, ...args) {
-  return driver.val(...args) + "\n";
+  return driver.val(...args) + "";
 }
 //***************************************************************************************
 
@@ -234,16 +234,18 @@ Blockly.AVR.h = function () {
   return generateDriverFunctionCall(driversPrototypes.test, params);
 };
 Blockly.AVR.temperature_read = function () {
-  const params = extractParametersFromBlocks(this);
-  return generateDriverFunctionCall(driversPrototypes.analog_sensors.temperature_read, params);
+  return [
+    generateDriverFunctionCall(
+      driversPrototypes.analog_sensors.temperature_read
+    ),
+    Blockly.AVR.ORDER_ATOMIC,
+  ];
 }
 Blockly.AVR.brightness_read = function () {
-  const params = extractParametersFromBlocks(this);
-  return generateDriverFunctionCall(driversPrototypes.analog_sensors.brightness_read, params);
+  return generateDriverFunctionCall(driversPrototypes.analog_sensors.brightness_read);
 }
 Blockly.AVR.sound_level_read = function () {
-  const params = extractParametersFromBlocks(this);
-  return generateDriverFunctionCall(driversPrototypes.analog_sensors.sound_level_read, params);
+  return generateDriverFunctionCall(driversPrototypes.analog_sensors.sound_level_read);
 }
 Blockly.AVR.external_sensor_read = function () {
   const params = extractParametersFromFields(this, "sensors");

@@ -36,23 +36,34 @@ Blockly.Blocks.base_map = {
     this.setTooltip("Re-maps a number from [0-1024] to another.");
   },
 };
+
+// Blockly.Blocks.temperature_read = {
+//   helpUrl: "",
+//   init: function () {
+//     this.setColour(350);
+//     this.appendDummyInput().appendField("Read temperature value");
+//     this.setOutput(!0, "Number");
+//     this.setTooltip("Read brightness level from a sensor");
+//   },
+// };
+
 Blockly.Blocks.temperature_read = {
   helpUrl: "",
   init: function () {
-    this.setColour(350);
+    this.setColour(230);
     this.appendDummyInput()
-      .appendField("Read temperature level ")
-      this.setOutput(!0, "Boolean");
-    this.setTooltip("Read brightness level from a sensor");
+      .appendField("Read temperature value");
+    this.setOutput(!0, "Number");
+    this.setTooltip("Return value between 0 and 1024");
   },
 };
+
 Blockly.Blocks.brightness_read = {
   helpUrl: "",
   init: function () {
     this.setColour(350);
-    this.appendDummyInput()
-      .appendField("Read brightness level ")
-      this.setOutput(!0, "Boolean");
+    this.appendDummyInput().appendField("Read brightness value");
+    this.setOutput(!0);
     this.setTooltip("Read brightness level from a sensor");
   },
 };
@@ -60,9 +71,8 @@ Blockly.Blocks.sound_level_read = {
   helpUrl: "",
   init: function () {
     this.setColour(350);
-    this.appendDummyInput()
-      .appendField("Read sound level ")
-      this.setOutput(!0, "Boolean");
+    this.appendDummyInput().appendField("Read sound level ");
+    this.setOutput(!0);
     this.setTooltip("Read the sound level");
   },
 };
@@ -81,7 +91,7 @@ Blockly.Blocks.external_sensor_read = {
         ]),
         "sensors"
       );
-      this.setOutput(!0, "Boolean");
+    this.setOutput(!0, "Number");
     this.setTooltip("Read a value from an external sensor");
   },
 };
@@ -89,9 +99,9 @@ Blockly.Blocks.buzzer_on = {
   helpUrl: "",
   init: function () {
     this.setColour(350);
-    this.appendDummyInput()
-      .appendField("Turn Buzzer on")
-      this.setOutput(!0, "Boolean");
+    this.appendDummyInput().appendField("Turn Buzzer on");
+    this.setPreviousStatement(!0, null);
+    this.setNextStatement(!0, null);
     this.setTooltip("Turns the buzzer on");
   },
 };
@@ -99,15 +109,15 @@ Blockly.Blocks.buzzer_off = {
   helpUrl: "",
   init: function () {
     this.setColour(350);
-    this.appendDummyInput()
-      .appendField("Turn Buzzer off")
-      this.setOutput(!0, "Boolean");
+    this.appendDummyInput().appendField("Turn Buzzer off");
+    this.setPreviousStatement(!0, null);
+    this.setNextStatement(!0, null);
     this.setTooltip("Turns the buzzer off");
   },
 };
 Blockly.Blocks.dot_matrix_display_char = {
   helpUrl: "",
-  init: function() {
+  init: function () {
     this.setColour(230);
     this.appendDummyInput()
       .appendField("Display character")
@@ -120,7 +130,7 @@ Blockly.Blocks.dot_matrix_display_char = {
 };
 Blockly.Blocks.eight_digit_seven_segment_display = {
   helpUrl: "",
-  init: function() {
+  init: function () {
     this.setColour(270);
     this.appendDummyInput()
       .appendField("Display number")
@@ -135,13 +145,19 @@ Blockly.Blocks.eight_digit_seven_segment_display = {
 };
 Blockly.Blocks.EEPROM_write_byte = {
   helpUrl: "",
-  init: function() {
+  init: function () {
     this.setColour(180);
     this.appendDummyInput()
       .appendField("Write byte")
-      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "ADDRESS")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "ADDRESS"
+      )
       .appendField("to EEPROM")
-      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "VALUE");
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "VALUE"
+      );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Write a byte to EEPROM at a specific address");
@@ -149,7 +165,7 @@ Blockly.Blocks.EEPROM_write_byte = {
 };
 Blockly.Blocks.EEPROM_read_byte = {
   helpUrl: "",
-  init: function() {
+  init: function () {
     this.setColour(210);
     this.appendDummyInput()
       .appendField("Read byte from EEPROM")
@@ -161,7 +177,6 @@ Blockly.Blocks.EEPROM_read_byte = {
     this.setTooltip("Read a byte from EEPROM at a specific address");
   },
 };
-
 
 Blockly.Blocks.inout_buildin_led = {
   helpUrl: "",
