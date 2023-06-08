@@ -21,6 +21,6 @@ uint16_t Sound_level_read();
 
 uint16_t Builtin_POT_read();
 
-uint16_t External_sensor_read(uint8_t sensorNUm);
+uint16_t External_sensor_read(uint8_t sensorNum);
 
 #endif /* ANALOG_SENSOR_H_ */
