@@ -13,17 +13,20 @@ Please refer to LICENSE file for licensing information.
 
 #include <avr/io.h>
 
-
+#ifndef DOT_MATRIX_MODULE_PORT
+#define DOT_MATRIX_MODULE_PORT PORTB
+#define DOT_MATRIX_MODULE_DDR DDRB
+#endif
 //setup ports
-#define MAX7219_DINDDR DDRB
-#define MAX7219_DINPORT PORTB
-#define MAX7219_DININPUT PB5
-#define MAX7219_CLKDDR DDRB
-#define MAX7219_CLKPORT PORTB
-#define MAX7219_CLKINPUT PB7
-#define MAX7219_LOADDDR DDRB
-#define MAX7219_LOADPORT PORTB
-#define MAX7219_LOADINPUT PB0
+#define MAX7219_DINDDR DOT_MATRIX_MODULE_DDR
+#define MAX7219_CLKDDR DOT_MATRIX_MODULE_DDR
+#define MAX7219_LOADDDR DOT_MATRIX_MODULE_DDR
+#define MAX7219_DINPORT DOT_MATRIX_MODULE_PORT
+#define MAX7219_CLKPORT DOT_MATRIX_MODULE_PORT
+#define MAX7219_LOADPORT DOT_MATRIX_MODULE_PORT
+#define MAX7219_LOADINPUT 0
+#define MAX7219_DININPUT  5
+#define MAX7219_CLKINPUT  7
 
 //enable the atomic mode on shift out
 #define MAX7219_ATOMICMODEENABLED 1
@@ -46,7 +49,6 @@ Please refer to LICENSE file for licensing information.
 #define MAX7219_REGSCANLIMIT 0x0B
 #define MAX7219_REGSHUTDOWN 0x0C
 #define MAX7219_REGTEST 0x0F
-
 
 //functions
 extern void max7219_send(uint8_t icnum, uint8_t reg, uint8_t data);
