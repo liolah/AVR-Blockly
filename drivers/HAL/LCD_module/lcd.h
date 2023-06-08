@@ -24,7 +24,6 @@
 #define RW (1 + LCD_MODULE_PINS_SHIFT)	
 #define EN (2 + LCD_MODULE_PINS_SHIFT) 		
 
-
 void LCD_init(void);
 
 void LCD_sendData(uint8_t data);

@@ -1,20 +1,18 @@
-#ifndef BUZZER_H_
-#define BUZZER_H_
+#ifndef PORT_EXPANDER_MODULE_H_
+#define PORT_EXPANDER_MODULE_H_
 
+#include "../../MCAL/DIO/dio.h"
 #include "../../MCAL/I2C/i2c.h"
 
-#ifndef BUZZER_MODULE_PORT
-#define BUZZER_MODULE_PORT PORT_A
-#endif
+#define PORT_EXPANDER_MODULE_MODULE_PORT PORT_C
 
-#ifndef BUZZER_MODULE_PINS_SHIFT
-#define BUZZER_MODULE_PINS_SHIFT 0
-#endif
+#define PORT_EXPANDER_MODULE_EXPANDER_CHIP_0_I2C_ADDRESS 0b00000111
+#define PORT_EXPANDER_MODULE_EXPANDER_CHIP_1_I2C_ADDRESS 0b00000111
 
-void Buzzer_init();
+void Port_expander_module_init();
 
-void Buzzer_on();
+void Port_expander_module_write(uint8_t chipNumber, int8_t data);
 
-void Buzzer_off();
+void Port_expander_module_read(uint8_t chipNumber);
 
-#endif /* BUZZER_H_ */
+#endif /* PORT_EXPANDER_MODULE_H_ */

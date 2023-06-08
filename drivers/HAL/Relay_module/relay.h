@@ -1,20 +1,25 @@
-#ifndef BUZZER_H_
-#define BUZZER_H_
+#ifndef RELAY_MODULE_H_
+#define RELAY_MODULE_H_
 
-#include "../../MCAL/I2C/i2c.h"
+#include "../../MCAL/DIO/dio.h"
+#include "../../MCAL/PWM/pwm.h"
 
-#ifndef BUZZER_MODULE_PORT
-#define BUZZER_MODULE_PORT PORT_A
+#ifndef RELAY_MODULE_PORT
+#define RELAY_MODULE_PORT PORT_A
 #endif
 
-#ifndef BUZZER_MODULE_PINS_SHIFT
-#define BUZZER_MODULE_PINS_SHIFT 0
+#ifndef RELAY_MODULE_PINS_SHIFT
+#define RELAY_MODULE_PINS_SHIFT 0
 #endif
 
-void Buzzer_init();
+void Relay_module_init();
 
-void Buzzer_on();
+void Relay_on(uint8_t relayNumber);
 
-void Buzzer_off();
+void Relay_off(uint8_t relayNumber);
 
-#endif /* BUZZER_H_ */
+void Relay_toggle(uint8_t relayNumber);
+
+void SSR_set_brightness(double dc);
+
+#endif /* RELAY_MODULE_H_ */

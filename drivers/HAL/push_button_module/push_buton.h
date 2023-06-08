@@ -1,20 +1,18 @@
-#ifndef BUZZER_H_
-#define BUZZER_H_
+#ifndef PUSH_BUTTON_MODULE_H_
+#define PUSH_BUTTON_MODULE_H_
 
-#include "../../MCAL/I2C/i2c.h"
+#include "../../MCAL/DIO/dio.h"
 
-#ifndef BUZZER_MODULE_PORT
-#define BUZZER_MODULE_PORT PORT_A
+#ifndef PUSH_BUTTON_MODULE_PORT
+#define PUSH_BUTTON_MODULE_PORT PORT_C
 #endif
 
-#ifndef BUZZER_MODULE_PINS_SHIFT
-#define BUZZER_MODULE_PINS_SHIFT 0
+#ifndef PUSH_BUTTON_MODULE_PINS_SHIFT
+#define PUSH_BUTTON_MODULE_PINS_SHIFT 0
 #endif
 
-void Buzzer_init();
+void Push_button_module_init();
 
-void Buzzer_on();
+uint8_t Push_button_read(uint8_t button);
 
-void Buzzer_off();
-
-#endif /* BUZZER_H_ */
+#endif /* PUSH_BUTTON_MODULE_H_ */

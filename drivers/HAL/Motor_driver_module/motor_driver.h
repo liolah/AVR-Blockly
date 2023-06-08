@@ -1,20 +1,33 @@
-#ifndef BUZZER_H_
-#define BUZZER_H_
+#ifndef MOTOR_DRIVER_MODULE_H_
+#define MOTOR_DRIVER_MODULE_H_
 
-#include "../../MCAL/I2C/i2c.h"
+#include "../../MCAL/DIO/dio.h"
+#include "../../MCAL/PWM/pwm.h"
 
-#ifndef BUZZER_MODULE_PORT
-#define BUZZER_MODULE_PORT PORT_A
+#ifndef MOTOR_DRIVER_MODULE_PORT
+#define MOTOR_DRIVER_MODULE_PORT PORT_D
 #endif
 
-#ifndef BUZZER_MODULE_PINS_SHIFT
-#define BUZZER_MODULE_PINS_SHIFT 0
+#ifndef MOTOR_DRIVER_MODULE_PINS_SHIFT
+#define MOTOR_DRIVER_MODULE_PINS_SHIFT 0
 #endif
 
-void Buzzer_init();
+#define SERVO_PULSE_PERIODIC_TIME_mS 20.0 
 
-void Buzzer_on();
+#define SERVO_MIN_HIGH_PULSE_DURATION_mS  0.5
+#define SERVO_MAX_HIGH_PULSE_DURATION_mS  2.5
 
-void Buzzer_off();
+#define SERVO_MIN_ANGLE  0.0
+#define SERVO_MAX_ANGLE  180.0
 
-#endif /* BUZZER_H_ */
+void Motor_driver_init();
+
+void Motor_on(uint8_t motorNumber, uint8_t direction);
+
+void Motor_off(uint8_t motorNumber);
+
+void Servo_init(uint8_t servoNumber);
+
+void Servo_move_to_angle(uint8_t dc);
+
+#endif /* MOTOR_DRIVER_MODULE_H_ */

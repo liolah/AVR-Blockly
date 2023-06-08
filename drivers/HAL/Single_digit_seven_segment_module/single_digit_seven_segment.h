@@ -1,21 +1,18 @@
+#ifndef SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_H_
+#define SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_H_
 
-#ifndef BUZZER_H_
-#define BUZZER_H_
+#include "../../MCAL/DIO/dio.h"
 
-#include "../../MCAL/I2C/i2c.h"
-
-#ifndef BUZZER_MODULE_PORT
-#define BUZZER_MODULE_PORT PORT_A
+#ifndef SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PORT
+#define SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PORT PORT_B
 #endif
 
-#ifndef BUZZER_MODULE_PINS_SHIFT
-#define BUZZER_MODULE_PINS_SHIFT 0
+#ifndef SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PINS_SHIFT
+#define SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PINS_SHIFT 0
 #endif
 
-void Buzzer_init();
+void Single_digit_seven_segment_module_init();
 
-void Buzzer_on();
+void Single_digit_seven_segment_show_hex_num(uint8_t num);
 
-void Buzzer_off();
-
-#endif /* BUZZER_H_ */
+#endif /* SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_H_ */

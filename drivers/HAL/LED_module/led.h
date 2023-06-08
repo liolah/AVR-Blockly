@@ -1,20 +1,22 @@
-#ifndef BUZZER_H_
-#define BUZZER_H_
+#ifndef LED_MODULE_H_
+#define LED_MODULE_H_
 
-#include "../../MCAL/I2C/i2c.h"
+#include "../../MCAL/DIO/dio.h"
 
-#ifndef BUZZER_MODULE_PORT
-#define BUZZER_MODULE_PORT PORT_A
+#ifndef LED_MODULE_PORT
+#define LED_MODULE_PORT PORT_A
 #endif
 
-#ifndef BUZZER_MODULE_PINS_SHIFT
-#define BUZZER_MODULE_PINS_SHIFT 0
+#ifndef LED_MODULE_PINS_SHIFT
+#define LED_MODULE_PINS_SHIFT 0
 #endif
 
-void Buzzer_init();
+void LED_module_init();
 
-void Buzzer_on();
+void LED_on(uint8_t LEDNumber);
 
-void Buzzer_off();
+void LED_off(uint8_t LEDNumber);
 
-#endif /* BUZZER_H_ */
+void LED_toggle(uint8_t LEDNumber);
+
+#endif /* LED_MODULE_H_ */
