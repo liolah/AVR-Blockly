@@ -12,7 +12,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <avr/io.h>
-#include "../bit_manipulation.h"
+#include "../../utilities/bit_manipulation.h"
 
 #define PORT_A 'A'
 #define PORT_B 'B'
