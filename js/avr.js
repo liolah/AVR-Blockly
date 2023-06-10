@@ -4,8 +4,8 @@
 //***************************************************************************************
 // Importing the drivers and libs
 import libs from "../JS_drivers/libraries.js";
-import inits from "../JS_drivers/modulesInitializations.js";
 import driversPrototypes from "../JS_drivers/driversPrototypes.js";
+import modulesInitializations from "../JS_drivers/modulesInitializations.js";
 
 // Helper functions to make it easier and more comprehensible to import and generate the code
 
@@ -16,7 +16,7 @@ function includeLib(lib) {
 
 // Adds a module initialization to the setup list
 function initModule(module) {
-  Blockly.AVR.setups_[module.name] = inits[module].val;
+  Blockly.AVR.setups_[module.name] = module.val();
 }
 
 // Extracts a parameter from a block
@@ -33,13 +33,19 @@ function extractParametersFromBlocks(object, ...params) {
   return paramsList;
 }
 
-function attachModuleOnPort(module, macroDefinitionName, portName, pinShift) {
+function attachModuleOnPort(
+  module,
+  portMacroDefinitionName,
+  portName,
+  pinShiftMacroDefinitionName,
+  pinShift
+) {
   Blockly.AVR.definitions_[
     `${module.name}_port`
-  ] = `#define ${macroDefinitionName} ${portName}`;
+  ] = `#define ${portMacroDefinitionName} ${portName}`;
   Blockly.AVR.definitions_[
     `${module.name}_pinShift`
-  ] = `#define ${macroDefinitionName} ${pinShift}`;
+  ] = `#define ${pinShiftMacroDefinitionName} ${pinShift}`;
 }
 
 function extractParametersFromFields(object, ...params) {
@@ -275,12 +281,26 @@ Blockly.AVR.external_sensor_read = function () {
     ...params
   );
 };
+
+// Liolah
 Blockly.AVR.buzzer_on = function () {
+  includeLib(libs.buzzer);
+  initModule(modulesInitializations.buzzer.buzzer_init);
+  const params = extractParametersFromFields(this, "modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.buzzer,
+    "BUZZER_MODULE_PORT",
+    params[0],
+    "BUZZER_MODULE_PINS_SHIFT",
+    params[1]
+  );
   return generateDriverFunctionCall(driversPrototypes.buzzer.buzzer_on);
 };
+
 Blockly.AVR.buzzer_off = function () {
   return generateDriverFunctionCall(driversPrototypes.buzzer.buzzer_off);
 };
+
 Blockly.AVR.dot_matrix_display_char = function () {
   const params = extractParametersFromFields(this, "CHARACTER");
   return generateDriverFunctionCall(
@@ -288,6 +308,7 @@ Blockly.AVR.dot_matrix_display_char = function () {
     ...params
   );
 };
+
 Blockly.AVR.eight_digit_seven_segment_display = function () {
   const params = extractParametersFromFields(this, "NUMBER");
   return generateDriverFunctionCall(
