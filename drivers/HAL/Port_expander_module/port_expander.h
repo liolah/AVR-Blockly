@@ -13,6 +13,6 @@ void Port_expander_module_init();
 
 void Port_expander_module_write(uint8_t chipNumber, int8_t data);
 
-void Port_expander_module_read(uint8_t chipNumber);
+uint8_t Port_expander_module_read(uint8_t chipNumber);
 
 #endif /* PORT_EXPANDER_MODULE_H_ */

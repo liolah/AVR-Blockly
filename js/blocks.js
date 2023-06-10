@@ -67,6 +67,7 @@ Blockly.Blocks.brightness_read = {
     this.setTooltip("Read brightness level from a sensor");
   },
 };
+
 Blockly.Blocks.sound_level_read = {
   helpUrl: "",
   init: function () {
@@ -153,6 +154,11 @@ Blockly.Blocks.EEPROM_write_byte = {
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "ADDRESS"
       )
+      .appendField("from page")
+      .appendField(
+      new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+      "PAGE"
+    )
       .appendField("to EEPROM")
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
@@ -172,11 +178,311 @@ Blockly.Blocks.EEPROM_read_byte = {
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "ADDRESS"
-      );
+      )
+      .appendField("from page")
+      .appendField(
+      new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+      "PAGE"
+    );
     this.setOutput(true, null);
     this.setTooltip("Read a byte from EEPROM at a specific address");
   },
 };
+
+Blockly.Blocks.keypad_getPressedKey = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(230);
+    this.appendDummyInput().appendField("Get pressed key from keypad");
+    this.setOutput(true, "String");
+    this.setTooltip("Returns the pressed key from the keypad");
+  },
+};
+
+Blockly.Blocks.LCD_sendData = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(230);
+    this.appendDummyInput()
+      .appendField("Send data")
+      .appendField(new Blockly.FieldTextInput("0"), "DATA")
+      .appendField("to LCD");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Send data to the LCD");
+  },
+};
+
+Blockly.Blocks.LCD_sendCommand = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(230);
+    this.appendDummyInput()
+      .appendField("Send command")
+      .appendField(new Blockly.FieldTextInput("0"), "COMMAND")
+      .appendField("to LCD");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Send a command to the LCD");
+  },
+};
+
+Blockly.Blocks.LCD_write_string = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(230);
+    this.appendDummyInput()
+      .appendField("Write string")
+      .appendField(new Blockly.FieldTextInput("Hello"), "STRING")
+      .appendField("to LCD");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Write a string to the LCD");
+  },
+};
+
+Blockly.Blocks.LCD_move_cursor_xy = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(230);
+    this.appendDummyInput()
+      .appendField("Move cursor to X:")
+      .appendField(new Blockly.FieldTextInput("0"), "X")
+      .appendField("Y:")
+      .appendField(new Blockly.FieldTextInput("0"), "Y");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Move the cursor to the specified position on the LCD");
+  },
+};
+
+Blockly.Blocks.LCD_write_string_xy = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(230);
+    this.appendDummyInput()
+      .appendField("Write string")
+      .appendField(new Blockly.FieldTextInput("Hello"), "STRING")
+      .appendField("at X:")
+      .appendField(new Blockly.FieldTextInput("0"), "X")
+      .appendField("Y:")
+      .appendField(new Blockly.FieldTextInput("0"), "Y")
+      .appendField("on LCD");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Write a string at the specified position on the LCD");
+  },
+};
+
+Blockly.Blocks.LCD_clear_screen = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(230);
+    this.appendDummyInput().appendField("Clear screen of LCD");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Clear the screen of the LCD");
+  },
+};
+
+Blockly.Blocks.LED_on = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(180);
+    this.appendDummyInput()
+      .appendField("Turn LED")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "LEDNumber")
+      .appendField("on");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turns on an LED");
+  },
+};
+
+Blockly.Blocks.LED_off = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(180);
+    this.appendDummyInput()
+      .appendField("Turn LED")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "LEDNumber")
+      .appendField("off");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turns off an LED");
+  },
+};
+
+Blockly.Blocks.LED_toggle = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(180);
+    this.appendDummyInput()
+      .appendField("Toggle LED")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "LEDNumber");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Toggles the state of an LED");
+  },
+};
+
+Blockly.Blocks.motor_on = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(270);
+    this.appendDummyInput()
+      .appendField("Turn Motor")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "motorNumber")
+      .appendField("on")
+      .appendField("Direction")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["Clockwise", "0"],
+          ["Counter-clockwise", "1"],
+        ]),
+        "direction"
+      );
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turns on a motor in a specific direction");
+  },
+};
+
+Blockly.Blocks.motor_off = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(270);
+    this.appendDummyInput()
+      .appendField("Turn Motor")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "motorNumber")
+      .appendField("off");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turns off a motor");
+  },
+};
+
+Blockly.Blocks.servo_move_to_angle = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(270);
+    this.appendDummyInput()
+      .appendField("Move Servo to Angle")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "dc");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Moves a servo to a specific angle");
+  },
+};
+
+Blockly.Blocks.port_expander_module_write = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(120);
+    this.appendDummyInput()
+      .appendField("Write Data")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "chipNumber")
+      .appendField("to Port Expander Module")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "data");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Writes data to a port expander module");
+  },
+};
+
+Blockly.Blocks.port_expander_module_read = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(120);
+    this.appendDummyInput()
+      .appendField("Read Data from Port Expander Module")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "chipNumber");
+    this.setOutput(true, null);
+    this.setTooltip("Reads data from a port expander module");
+  },
+};
+
+Blockly.Blocks.relay_on = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(60);
+    this.appendDummyInput()
+      .appendField("Turn Relay")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "relayNumber")
+      .appendField("on");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turns on a relay");
+  },
+};
+
+Blockly.Blocks.relay_off = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(60);
+    this.appendDummyInput()
+      .appendField("Turn Relay")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "relayNumber")
+      .appendField("off");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Turns off a relay");
+  },
+};
+
+Blockly.Blocks.relay_toggle = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(60);
+    this.appendDummyInput()
+      .appendField("Toggle Relay")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "relayNumber");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Toggles the state of a relay");
+  },
+};
+
+Blockly.Blocks.SSR_set_brightness = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(60);
+    this.appendDummyInput()
+      .appendField("Set SSR Brightness")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "dc");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Sets the brightness of an SSR");
+  },
+};
+
+Blockly.Blocks.single_digit_seven_segment_show_hex_num = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(330);
+    this.appendDummyInput()
+      .appendField("Display Hex Number")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "num")
+      .appendField("on Single Digit Seven Segment Display");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip("Displays a hex number on a single digit seven segment display");
+  },
+};
+
+Blockly.Blocks.push_button_read = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(210);
+    this.appendDummyInput()
+      .appendField("Read Push Button Number")
+      .appendField(new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator), "button");
+    this.setOutput(true, null);
+    this.setTooltip("Reads the state of a push button");
+  },
+};
+
+
 
 Blockly.Blocks.inout_buildin_led = {
   helpUrl: "",

@@ -22,7 +22,7 @@ export default {
     },
     DIO_port_write: {
       name: "DIO_port_write",
-      val: (portNumber = 0, value =0) => {
+      val: (portNumber = 0, value = 0) => {
         return `DIO_port_write(${portNumber}, ${value});`;
       },
     },
@@ -34,7 +34,7 @@ export default {
     },
     DIO_pin_toggle: {
       name: "DIO_pin_toggle",
-      val: (pinNumber = 0,portNumber = 0) => {
+      val: (pinNumber = 0, portNumber = 0) => {
         return `DIO_port_toggle(${pinNumber}, ${portNumber});`;
       },
     },
@@ -42,26 +42,26 @@ export default {
   bit_manipulation: {
     set_bit: {
       name: "set_bit",
-      val: (portNumber = 0,pinNumber = 0) => {
+      val: (portNumber = 0, pinNumber = 0) => {
         return `set_bit(${portNumber}, ${pinNumber});`;
       },
     },
     clear_bit: {
       name: "clear_bit",
-      val: (portNumber = 0,pinNumber = 0) => {
+      val: (portNumber = 0, pinNumber = 0) => {
         return `clear_bit(${portNumber}, ${pinNumber});`;
       },
     },
     toggle_bit: {
       name: "toggle_bit",
-      val: (portNumber = 0,pinNumber = 0) => {
+      val: (portNumber = 0, pinNumber = 0) => {
         return `toggle_bit(${portNumber}, ${pinNumber});`;
       },
     },
     read_bit: {
       name: "read_bit",
-      val: (portNumber = 0,pinNumber = 0) => {
-        return `read_bit(${portNumber}, ${pinNumber});`;
+      val: (portNumber = 0, pinNumber = 0) => {
+        return `read_bit(${portNumber}, ${pinNumber})`;
       },
     },
   },
@@ -70,19 +70,19 @@ export default {
       name: "temperature_read",
       val: () => {
         return `Temperature_read()`;
-     },
+      },
     },
     brightness_read: {
       name: "brightness_read",
       val: () => {
         return `Brightness_read()`;
-     },
+      },
     },
     sound_level_read: {
       name: "sound_level_read",
       val: () => {
         return `Sound_level_read()`;
-     },
+      },
     },
     external_sensor_read: {
       name: "external_sensor_read",
@@ -101,27 +101,27 @@ export default {
   },
   buzzer: {
     buzzer_on: {
-      name:"buzzer_on",
+      name: "buzzer_on",
       val: () => {
         return `Buzzer_on();`;
       },
     },
     buzzer_off: {
-      name:"buzzer_off",
+      name: "buzzer_off",
       val: () => {
         return `Buzzer_off();`;
       },
-    },  
+    },
   },
   dot_matrix: {
     dot_matrix_display_char: {
-      name:"dot_matrix_display_char",
+      name: "dot_matrix_display_char",
       val: (x = 0) => {
         return `Dot_matrix_display_char(${x});`;
       },
     },
     eight_digit_seven_segment_display: {
-      name:"eight_digit_seven_segment_display",
+      name: "eight_digit_seven_segment_display",
       val: (x = 0) => {
         return `Eight_digit_seven_segment_display(${x});`;
       },
@@ -129,99 +129,99 @@ export default {
   },
   EEPROM: {
     EEPROM_write_byte: {
-      name:"EEPROM_write_byte",
+      name: "EEPROM_write_byte",
       val: (page = 0, address = 0, data = 0) => {
         return `EEPROM_write_byte(${page},${address},${data});`;
-      }
+      },
     },
     EEPROM_read_byte: {
-      name:"EEPROM_read_byte",
+      name: "EEPROM_read_byte",
       val: (page = 0, address = 0) => {
         return `EEPROM_read_byte(${page},${address})`;
-      }
+      },
     },
   },
   four_digits_seven_segment: {
     four_digits_seven_segment_display_num: {
-      name:"four_digits_seven_segment_display_num",
+      name: "four_digits_seven_segment_display_num",
       val: (x = 0) => {
         return `Four_digits_seven_segment_display_num(${x});`;
       },
     },
     four_digits_seven_segment_display_string: {
-      name:"four_digits_seven_segment_display_string",
+      name: "four_digits_seven_segment_display_string",
       val: (x = 0) => {
         return `Four_digits_seven_segment_display_num(${x});`;
       },
     },
     four_digits_seven_segment_brightness: {
-      name:"four_digits_seven_segment_brightness",
+      name: "four_digits_seven_segment_brightness",
       val: (brightness = 0) => {
-        return `four_digits_seven_segment_brightness(${brightness});`;
+        return `Four_digits_seven_segment_brightness(${brightness});`;
       },
     },
   },
   keypad: {
     keypad_getPressedKey: {
-      name:"keypad_getPressedKey",
-      val:() => {
+      name: "keypad_getPressedKey",
+      val: () => {
         return `Keypad_getPressedKey()`;
       },
     },
   },
   LCD: {
     LCD_sendData: {
-      name:"LCD_sendData",
+      name: "LCD_sendData",
       val: (data = 0) => {
         return `LCD_sendData(${data});`;
       },
     },
     LCD_sendCommand: {
-      name:"LCD_sendCommand",
+      name: "LCD_sendCommand",
       val: (cmd = 0) => {
         return `LCD_sendCommand(${cmd});`;
       },
     },
     LCD_write_string: {
-      name:"LCD_write_string",
+      name: "LCD_write_string",
       val: (str = 0) => {
         return `LCD_write_string(${str});`;
       },
     },
     LCD_move_cursor_xy: {
-      name:"LCD_move_cursor_xy",
-      val: (x = 0 , y = 0) => {
+      name: "LCD_move_cursor_xy",
+      val: (x = 0, y = 0) => {
         return `LCD_move_cursor_xy(${x},${y});`;
       },
     },
     LCD_write_string_xy: {
-      name:"LCD_write_string_xy",
-      val: (x = 0 , y = 0, str = 0) => {
+      name: "LCD_write_string_xy",
+      val: (x = 0, y = 0, str = 0) => {
         return `LCD_write_string_xy(${x},${y},${str});`;
       },
     },
     LCD_clear_screen: {
-      name:"LCD_clear_screen",
-      val: (x = 0 , y = 0, str = 0) => {
+      name: "LCD_clear_screen",
+      val: (x = 0, y = 0, str = 0) => {
         return `LCD_clear_screen(${x},${y},${str});`;
       },
     },
   },
   LED: {
     LED_on: {
-      name:"LED_on",
+      name: "LED_on",
       val: (LEDNumber = 0) => {
         return `LED_on(${LEDNumber});`;
       },
     },
     LED_off: {
-      name:"LED_off",
+      name: "LED_off",
       val: (LEDNumber = 0) => {
         return `LED_off(${LEDNumber});`;
       },
     },
     LED_toggle: {
-      name:"LED_toggle",
+      name: "LED_toggle",
       val: (LEDNumber = 0) => {
         return `LED_toggle(${LEDNumber});`;
       },
@@ -257,7 +257,7 @@ export default {
     port_expander_module_read: {
       name: "port_expander_module_read",
       val: (chipNumber = 0) => {
-        return `Port_expander_module_read(${chipNumber});`;
+        return `Port_expander_module_read(${chipNumber})`;
       },
     },
   },
@@ -271,7 +271,7 @@ export default {
     relay_off: {
       name: "relay_off",
       val: (relayNumber = 0) => {
-        return `relay_off(${relayNumber});`;
+        return `Relay_off(${relayNumber});`;
       },
     },
     relay_toggle: {
@@ -300,7 +300,7 @@ export default {
       name: "push_button_read",
       val: (button = 0) => {
         return `Push_button_read(${button})`;
-     },
+      },
     },
   },
-}
+};
