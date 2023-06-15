@@ -17,7 +17,11 @@
 #endif
 
 #include "../../MCAL/DIO/dio.h"
+
+#ifndef F_CPU
 #define F_CPU 16000000UL		
+#endif
+
 #include <util/delay.h>
 
 #define RS (0 + LCD_MODULE_PINS_SHIFT)	

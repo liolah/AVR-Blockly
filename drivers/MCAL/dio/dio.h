@@ -40,6 +40,9 @@ uint8_t DIO_pin_read(uint8_t pinNumber, uint8_t portNumber);
 // Write a value to a port
 void DIO_port_write(uint8_t portNumber, uint8_t value);
 
+// Write a value to a port
+void DIO_port_send(uint8_t portNumber, uint8_t value);
+
 // Read a value from a port
 uint8_t DIO_port_read(uint8_t portNumber);
 

@@ -151,7 +151,7 @@ export default {
     four_digits_seven_segment_display_string: {
       name: "four_digits_seven_segment_display_string",
       val: (x = 0) => {
-        return `Four_digits_seven_segment_display_num(${x});`;
+        return `Four_digits_seven_segment_display_string(${x});`;
       },
     },
     four_digits_seven_segment_brightness: {
@@ -202,8 +202,8 @@ export default {
     },
     LCD_clear_screen: {
       name: "LCD_clear_screen",
-      val: (x = 0, y = 0, str = 0) => {
-        return `LCD_clear_screen(${x},${y},${str});`;
+      val: () => {
+        return `LCD_clear_screen();`;
       },
     },
   },

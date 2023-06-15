@@ -253,14 +253,15 @@ Blockly.AVR.h = function () {
 };
 
 Blockly.AVR.temperature_read = function () {
-  return [
-    generateDriverFunctionCall(
-      driversPrototypes.analog_sensors.temperature_read
-    ),
+  includeLib(libs.analog_sensors);
+  initModule(modulesInitializations.analog_sensors.analog_sensors_init);
+  return [generateDriverFunctionCall(driversPrototypes.analog_sensors.temperature_read),
     Blockly.AVR.ORDER_ATOMIC,
   ];
 };
 Blockly.AVR.brightness_read = function () {
+  includeLib(libs.analog_sensors);
+  initModule(modulesInitializations.analog_sensors.analog_sensors_init);
   return [
     generateDriverFunctionCall(
       driversPrototypes.analog_sensors.brightness_read
@@ -270,11 +271,15 @@ Blockly.AVR.brightness_read = function () {
 };
 
 Blockly.AVR.sound_level_read = function () {
+  includeLib(libs.analog_sensors);
+  initModule(modulesInitializations.analog_sensors.analog_sensors_init);
   return generateDriverFunctionCall(
     driversPrototypes.analog_sensors.sound_level_read
   );
 };
 Blockly.AVR.external_sensor_read = function () {
+  includeLib(libs.analog_sensors);
+  initModule(modulesInitializations.analog_sensors.analog_sensors_init);
   const params = extractParametersFromFields(this, "sensors");
   return generateDriverFunctionCall(
     driversPrototypes.analog_sensors.external_sensor_read,
@@ -298,25 +303,55 @@ Blockly.AVR.buzzer_on = function () {
 };
 
 Blockly.AVR.buzzer_off = function () {
+  includeLib(libs.buzzer);
+  initModule(modulesInitializations.buzzer.buzzer_init);
+  const params = extractParametersFromFields(this, "modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.buzzer,
+    "BUZZER_MODULE_PORT",
+    params[0],
+    "BUZZER_MODULE_PINS_SHIFT",
+    params[1]
+  );
   return generateDriverFunctionCall(driversPrototypes.buzzer.buzzer_off);
 };
 
 Blockly.AVR.dot_matrix_display_char = function () {
-  const params = extractParametersFromFields(this, "CHARACTER");
+  includeLib(libs.dot_matrix);
+  initModule(modulesInitializations.dot_matrix.dot_matrix_init);
+  const params = extractParametersFromFields(this, "CHARACTER","modulePort","DDR");
+  attachModuleOnPort(
+    libs.dot_matrix,
+    "DOT_MATRIX_MODULE_PORT",
+    params[1],
+    "DOT_MATRIX_MODULE_DDR",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.dot_matrix.dot_matrix_display_char,
-    ...params
+    `'${params[0]}'`
   );
 };
 
 Blockly.AVR.eight_digit_seven_segment_display = function () {
-  const params = extractParametersFromFields(this, "NUMBER");
+  includeLib(libs.dot_matrix);
+  initModule(modulesInitializations.dot_matrix.dot_matrix_init);
+  const params = extractParametersFromFields(this, "NUMBER","modulePort","DDR");
+  attachModuleOnPort(
+    libs.dot_matrix,
+    "DOT_MATRIX_MODULE_PORT",
+    params[1],
+    "DOT_MATRIX_MODULE_DDR",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.dot_matrix.eight_digit_seven_segment_display,
-    ...params
+    `"${params[0]}"`
   );
 };
 Blockly.AVR.EEPROM_write_byte = function () {
+  includeLib(libs.EEPROM);
+  initModule(modulesInitializations.EEPROM.EEPROM_init);
   const params = extractParametersFromFields(this, "PAGE", "ADDRESS", "VALUE");
   return generateDriverFunctionCall(
     driversPrototypes.EEPROM.EEPROM_write_byte,
@@ -324,13 +359,52 @@ Blockly.AVR.EEPROM_write_byte = function () {
   );
 };
 Blockly.AVR.EEPROM_read_byte = function () {
+  includeLib(libs.EEPROM);
+  initModule(modulesInitializations.EEPROM.EEPROM_init);
   const params = extractParametersFromFields(this, "PAGE", "ADDRESS");
   return generateDriverFunctionCall(
     driversPrototypes.EEPROM.EEPROM_read_byte,
     ...params
   );
 };
+Blockly.AVR.four_digits_seven_segment_display_num = function () {
+  includeLib(libs.four_digits_seven_segment);
+  initModule(modulesInitializations.four_digits_seven_segment.four_digits_seven_segment_init);
+  const params = extractParametersFromFields(this, "NUMBER");
+  return generateDriverFunctionCall(
+    driversPrototypes.four_digits_seven_segment.four_digits_seven_segment_display_num,
+    ...params
+  );
+};
+Blockly.AVR.four_digits_seven_segment_display_string = function () {
+  includeLib(libs.four_digits_seven_segment);
+  initModule(modulesInitializations.four_digits_seven_segment.four_digits_seven_segment_init);
+  const params = extractParametersFromFields(this, "STRING");
+  return generateDriverFunctionCall(
+    driversPrototypes.four_digits_seven_segment.four_digits_seven_segment_display_string,
+    ...params
+  );
+};
+Blockly.AVR.four_digits_seven_segment_brightness = function () {
+  includeLib(libs.four_digits_seven_segment);
+  initModule(modulesInitializations.four_digits_seven_segment.four_digits_seven_segment_init);
+  const params = extractParametersFromFields(this, "brightness");
+  return generateDriverFunctionCall(
+    driversPrototypes.four_digits_seven_segment.four_digits_seven_segment_brightness,
+    ...params
+  );
+};
 Blockly.AVR.keypad_getPressedKey = function () {
+  includeLib(libs.keypad);
+  initModule(modulesInitializations.keypad.keypad_init);
+  const params = extractParametersFromFields(this, "modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.keypad,
+    "KEYPAD_MODULE_PORT",
+    params[0],
+    "KEYPAD_MODULE_PINS_SHIFT",
+    params[1]
+  );
   return [
     generateDriverFunctionCall(driversPrototypes.keypad.keypad_getPressedKey),
     Blockly.AVR.ORDER_ATOMIC,
@@ -338,7 +412,18 @@ Blockly.AVR.keypad_getPressedKey = function () {
 };
 
 Blockly.AVR.LCD_sendData = function () {
-  const params = extractParametersFromFields(this, "DATA");
+  includeLib(libs.LCD);
+  initModule(modulesInitializations.LCD.LCD_init);
+  const params = extractParametersFromFields(this, "DATA", "modulePort", "DDR", "pinShift");
+  attachModuleOnPort(
+    libs.LCD,
+    "LCD_MODULE_PORT",
+    params[1],
+    "LCD_MODULE_DDR",
+    params[2],
+    "LCD_MODULE_PINS_SHIFT",
+    params[3]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.LCD.LCD_sendData,
     ...params
@@ -346,23 +431,55 @@ Blockly.AVR.LCD_sendData = function () {
 };
 
 Blockly.AVR.LCD_sendCommand = function () {
-  const params = extractParametersFromFields(this, "COMMAND");
+  includeLib(libs.LCD);
+  initModule(modulesInitializations.LCD.LCD_init);
+  const params = extractParametersFromFields(this, "COMMAND", "modulePort", "DDR", "pinShift");
+  attachModuleOnPort(
+    libs.LCD,
+    "LCD_MODULE_PORT",
+    params[1],
+    "LCD_MODULE_PINS_SHIFT",
+    params[3]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.LCD.LCD_sendCommand,
-    ...params
+    params[0]
   );
 };
 
 Blockly.AVR.LCD_write_string = function () {
-  const params = extractParametersFromFields(this, "STRING");
+  includeLib(libs.LCD);
+  initModule(modulesInitializations.LCD.LCD_init);
+  const params = extractParametersFromFields(this, "STRING", "modulePort", "DDR", "pinShift");
+  attachModuleOnPort(
+    libs.LCD,
+    "LCD_MODULE_PORT",
+    params[1],
+    "LCD_MODULE_PINS_SHIFT",
+    params[3]
+  );
+  Blockly.AVR.definitions_[
+    `LCD_MODULE_DDR_ddr`
+  ] = `#define LCD_MODULE_DDR ${params[2]}`;
   return generateDriverFunctionCall(
     driversPrototypes.LCD.LCD_write_string,
-    ...params
+    `"${params[0]}"`
   );
 };
 
 Blockly.AVR.LCD_move_cursor_xy = function () {
-  const params = extractParametersFromFields(this, "X", "Y");
+  includeLib(libs.LCD);
+  initModule(modulesInitializations.LCD.LCD_init);
+  const params = extractParametersFromFields(this, "X", "Y", "modulePort", "DDR", "pinShift");
+  attachModuleOnPort(
+    libs.LCD,
+    "LCD_MODULE_PORT",
+    params[2],
+    "LCD_MODULE_DDR",
+    params[3],
+    "LCD_MODULE_PINS_SHIFT",
+    params[4]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.LCD.LCD_move_cursor_xy,
     ...params
@@ -370,7 +487,18 @@ Blockly.AVR.LCD_move_cursor_xy = function () {
 };
 
 Blockly.AVR.LCD_write_string_xy = function () {
-  const params = extractParametersFromFields(this, "STRING", "X", "Y");
+  includeLib(libs.LCD);
+  initModule(modulesInitializations.LCD.LCD_init);
+  const params = extractParametersFromFields(this, "STRING", "X", "Y", "modulePort", "DDR", "pinShift");
+  attachModuleOnPort(
+    libs.LCD,
+    "LCD_MODULE_PORT",
+    params[3],
+    "LCD_MODULE_DDR",
+    params[4],
+    "LCD_MODULE_PINS_SHIFT",
+    params[5]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.LCD.LCD_write_string_xy,
     ...params
@@ -378,21 +506,60 @@ Blockly.AVR.LCD_write_string_xy = function () {
 };
 
 Blockly.AVR.LCD_clear_screen = function () {
-  return generateDriverFunctionCall(driversPrototypes.LCD.LCD_clear_screen);
+  includeLib(libs.LCD);
+  initModule(modulesInitializations.LCD.LCD_init);
+  const params = extractParametersFromFields(this, "modulePort", "DDR", "pinShift");
+  attachModuleOnPort(
+    libs.LCD,
+    "LCD_MODULE_PORT",
+    params[0],
+    "LCD_MODULE_DDR",
+    params[1],
+    "LCD_MODULE_PINS_SHIFT",
+    params[2]
+  );
+  return generateDriverFunctionCall(driversPrototypes.LCD.LCD_clear_screen,...params);
 };
 
 Blockly.AVR.LED_on = function () {
-  const params = extractParametersFromFields(this, "LEDNumber");
+  includeLib(libs.LED);
+  initModule(modulesInitializations.LED.LED_module_init);
+  const params = extractParametersFromFields(this, "LEDNumber", "modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.LED,
+    "LED_MODULE_PORT",
+    params[1],
+    "LED_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(driversPrototypes.LED.LED_on, ...params);
 };
 
 Blockly.AVR.LED_off = function () {
-  const params = extractParametersFromFields(this, "LEDNumber");
+  includeLib(libs.LED);
+  initModule(modulesInitializations.LED.LED_module_init);
+  const params = extractParametersFromFields(this, "LEDNumber", "modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.LED,
+    "LED_MODULE_PORT",
+    params[1],
+    "LED_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(driversPrototypes.LED.LED_off, ...params);
 };
 
 Blockly.AVR.LED_toggle = function () {
-  const params = extractParametersFromFields(this, "LEDNumber");
+  includeLib(libs.LED);
+  initModule(modulesInitializations.LED.LED_module_init);
+  const params = extractParametersFromFields(this, "LEDNumber", "modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.LED,
+    "LED_MODULE_PORT",
+    params[1],
+    "LED_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.LED.LED_toggle,
     ...params
@@ -400,7 +567,16 @@ Blockly.AVR.LED_toggle = function () {
 };
 
 Blockly.AVR.motor_on = function () {
-  const params = extractParametersFromFields(this, "motorNumber", "direction");
+  includeLib(libs.motor_driver);
+  initModule(modulesInitializations.motor_driver.motor_driver_init);
+  const params = extractParametersFromFields(this, "motorNumber", "direction", "modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.motor_driver,
+    "MOTOR_DRIVER_MODULE_PORT",
+    params[2],
+    "MOTOR_DRIVER_MODULE_PINS_SHIFT",
+    params[3]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.Motor.motor_on,
     ...params
@@ -408,7 +584,16 @@ Blockly.AVR.motor_on = function () {
 };
 
 Blockly.AVR.motor_off = function () {
-  const params = extractParametersFromFields(this, "motorNumber");
+  const params = extractParametersFromFields(this, "motorNumber", "modulePort", "pinShift");
+  includeLib(libs.motor_driver);
+  initModule(modulesInitializations.motor_driver.motor_driver_init);
+  attachModuleOnPort(
+    libs.motor_driver,
+    "MOTOR_DRIVER_MODULE_PORT",
+    params[1],
+    "MOTOR_DRIVER_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.Motor.motor_off,
     ...params
@@ -416,7 +601,16 @@ Blockly.AVR.motor_off = function () {
 };
 
 Blockly.AVR.servo_move_to_angle = function () {
-  const params = extractParametersFromFields(this, "dc");
+  const params = extractParametersFromFields(this, "dc", "modulePort", "pinShift");
+  includeLib(libs.motor_driver);
+  initModule(modulesInitializations.motor_driver.motor_driver_init);
+  attachModuleOnPort(
+    libs.motor_driver,
+    "MOTOR_DRIVER_MODULE_PORT",
+    params[1],
+    "MOTOR_DRIVER_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.Motor.servo_move_to_angle,
     ...params
@@ -443,7 +637,16 @@ Blockly.AVR.port_expander_module_read = function () {
 };
 
 Blockly.AVR.relay_on = function () {
-  const params = extractParametersFromFields(this, "relayNumber");
+  includeLib(libs.relay);
+  initModule(modulesInitializations.relay.relay_module_init);
+  const params = extractParametersFromFields(this, "relayNumber","modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.relay,
+    "RELAY_MODULE_PORT",
+    params[1],
+    "RELAY_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.relay.relay_on,
     ...params
@@ -451,7 +654,16 @@ Blockly.AVR.relay_on = function () {
 };
 
 Blockly.AVR.relay_off = function () {
-  const params = extractParametersFromFields(this, "relayNumber");
+  includeLib(libs.relay);
+  initModule(modulesInitializations.relay.relay_module_init);
+  const params = extractParametersFromFields(this, "relayNumber","modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.relay,
+    "RELAY_MODULE_PORT",
+    params[1],
+    "RELAY_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.relay.relay_off,
     ...params
@@ -459,7 +671,16 @@ Blockly.AVR.relay_off = function () {
 };
 
 Blockly.AVR.relay_toggle = function () {
-  const params = extractParametersFromFields(this, "relayNumber");
+  includeLib(libs.relay);
+  initModule(modulesInitializations.relay.relay_module_init);
+  const params = extractParametersFromFields(this, "relayNumber","modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.relay,
+    "RELAY_MODULE_PORT",
+    params[1],
+    "RELAY_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.relay.relay_toggle,
     ...params
@@ -467,7 +688,16 @@ Blockly.AVR.relay_toggle = function () {
 };
 
 Blockly.AVR.SSR_set_brightness = function () {
-  const params = extractParametersFromFields(this, "dc");
+  includeLib(libs.relay);
+  initModule(modulesInitializations.relay.relay_module_init);
+  const params = extractParametersFromFields(this, "dc","modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.relay,
+    "RELAY_MODULE_PORT",
+    params[1],
+    "RELAY_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.relay.SSR_set_brightness,
     ...params
@@ -475,7 +705,16 @@ Blockly.AVR.SSR_set_brightness = function () {
 };
 
 Blockly.AVR.single_digit_seven_segment_show_hex_num = function () {
-  const params = extractParametersFromFields(this, "num");
+  includeLib(libs.single_digit_seven_segment);
+  initModule(modulesInitializations.seven_segment.single_digit_seven_segment_module_init);
+  const params = extractParametersFromFields(this, "num","modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.single_digit_seven_segment,
+    "SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PORT",
+    params[1],
+    "SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return generateDriverFunctionCall(
     driversPrototypes.single_digit_seven_segment
       .single_digit_seven_segment_show_hex_num,
@@ -483,7 +722,16 @@ Blockly.AVR.single_digit_seven_segment_show_hex_num = function () {
   );
 };
 Blockly.AVR.push_button_read = function () {
-  const params = extractParametersFromFields(this, "button");
+  includeLib(libs.single_digit_seven_segment);
+  initModule(modulesInitializations.seven_segment.single_digit_seven_segment_module_init);
+  const params = extractParametersFromFields(this, "button","modulePort", "pinShift");
+  attachModuleOnPort(
+    libs.push_button,
+    "PUSH_BUTTON_MODULE_PORT",
+    params[1],
+    "PUSH_BUTTON_MODULE_PINS_SHIFT",
+    params[2]
+  );
   return [
     generateDriverFunctionCall(
       driversPrototypes.push_button.push_button_read,

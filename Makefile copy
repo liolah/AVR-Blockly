@@ -11,11 +11,10 @@ TARGET=BlocklyTemp
 SRCS=BlocklyTemp.c
 
 all:
-	${CC} ${CFLAGS} -o ${TARGET}.bin ${SRCS} "./drivers/HAL/Analog_sensors_module/analog_sensors.c" "drivers/HAL/Buzzer_module/buzzer.c" "./drivers/HAL/Dot_matrix_module/dot_matrix.c" "./drivers/HAL/EEPROM_module/eeprom.c" "./drivers/HAL/Four_digit_seven_segment_module/four_digit_seven_segment.c" "./drivers/HAL/Keypad_module/keypad.c" "./drivers/HAL/LCD_module/lcd.c" "./drivers/HAL/LED_module/led.c" "./drivers/HAL/Motor_driver_module/motor_driver.c" "./drivers/HAL/Port_expander_module/port_expander.c" "./drivers/HAL/Push_button_module/push_buton.c" "./drivers/HAL/Relay_module/relay.c" "./drivers/HAL/Single_digit_seven_segment_module/single_digit_seven_segment.c" "drivers/MCAL/dio/dio.c" "drivers/MCAL/ADC/adc.c" "drivers/MCAL/I2C/i2c.c" "drivers/MCAL/PWM/pwm.c" "drivers/MCAL/SPI/spi.c" "drivers/MCAL/UART/uart.c" "drivers/HAL/Four_digit_seven_segment_module/TM1650.c" "drivers/HAL/Dot_matrix_module/ledmatrix7219d88.c" "drivers/HAL/Dot_matrix_module/max7219.c"
-  
+	${CC} ${CFLAGS} -o ${TARGET}.bin ${SRCS}
 	${OBJCOPY} -j .text -j .data -O ihex ${TARGET}.bin ${TARGET}.hex
-	make flash
-# make clean
+# make flash
+	make clean
 	
 flash: ${TARGET}.hex
 	avrdude -c usbasp -p ${CORE} -u -U flash:w:${TARGET}.hex -F -q -P usb

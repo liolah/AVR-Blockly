@@ -5,7 +5,7 @@ export default {
   },
   dio: {
   name: "dio",
-  val: '#include "./drivers/MCAL/dio/dio.h"',
+  val: '#include "drivers/MCAL/dio/dio.h"',
   },
   analog_sensors: {
   name: "analog_sensors",
@@ -13,7 +13,7 @@ export default {
   },
   buzzer: {
   name: "buzzer",
-  val: '#include "./drivers/HAL/Buzzer_module/buzzer.h"'
+  val: '#include "drivers/HAL/Buzzer_module/buzzer.h"'
   },
   dot_matrix: {
   name: "dot_matrix",
@@ -25,7 +25,7 @@ export default {
   },
   four_digits_seven_segment: {
   name: "four_digits_seven_segment",
-  val: '#include "./drivers/HAL/Four_digits_seven_segment_module/four_digits_seven_segment.h"'
+  val: '#include "./drivers/HAL/Four_digit_seven_segment_module/four_digit_seven_segment.h"'
   },
   keypad: {
   name: "keypad",
@@ -47,8 +47,8 @@ export default {
   name: "port_expander",
   val: '#include "./drivers/HAL/Port_expander_module/port_expander.h"'
     },  
-  push_buttons: {
-  name: "push_buttons",
+  push_button: {
+  name: "push_button",
   val: '#include "./drivers/HAL/Push_button_module/push_buton.h"',
   },
   relay: {

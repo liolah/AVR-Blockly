@@ -7,10 +7,6 @@
 #define KEYPAD_MODULE_PORT PORT_D
 #endif
 
-#ifndef KEYPAD_MODULE_PINS_SHIFT
-#define KEYPAD_MODULE_PINS_SHIFT 0
-#endif
-
 #define KEYPAD_BUTTON_VALUES  {{'7','8','9','/'},{'4','5','6','*'},{'1','2','3','-'},{'#','0','=','+'}}
 
 #define KEYPAD_ROW_NUM  4

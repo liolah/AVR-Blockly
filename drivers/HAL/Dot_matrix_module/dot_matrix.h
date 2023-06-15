@@ -1,5 +1,5 @@
-#ifndef BUZZER_H_
-#define BUZZER_H_
+#ifndef DOT_MATRIX_MODULE_
+#define DOT_MATRIX_MODULE_
 
 //! This header files needs attention when creating the it's blocks.
 //! To define the port you need use PORTB instead of PORT_B and you need to use DDRB, too
@@ -15,7 +15,7 @@
 #include "../../MCAL/DIO/dio.h"
 #include <stdio.h>
 #include <util/delay.h>
-#include "ledmatrix7219d88/ledmatrix7219d88.h"
+#include "ledmatrix7219d88.h"
 
 void Dot_matrix_init();
 
@@ -23,4 +23,4 @@ void Dot_matrix_display_char(int8_t x);
 
 void Eight_digit_seven_segment_display(int8_t* x);
 
-#endif /* BUZZER_H_ */
+#endif /* DOT_MATRIX_MODULE_ */

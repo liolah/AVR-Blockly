@@ -2,6 +2,7 @@
 #define EEPROM_H_
 
 #include "../../MCAL/I2C/i2c.h"
+#include <util/delay.h>
 
 #define EEPROM_MODULE_PORT PORT_C
 

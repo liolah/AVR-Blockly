@@ -46,16 +46,16 @@ export default {
     },
   },
   four_digits_seven_segment: {
-    Four_digits_seven_segment_init: {
-      name:"Four_digits_seven_segment_init",
+    four_digits_seven_segment_init: {
+      name:"four_digits_seven_segment_init",
       val: () => {
         return `Four_digits_seven_segment_init();`;
       },
     },
   },
   keypad: {
-    Keypad_init: {
-      name:"Keypad_init",
+    keypad_init: {
+      name:"keypad_init",
       val:() => {
         return `Keypad_init();`;
       },
@@ -65,7 +65,7 @@ export default {
     LCD_init: {
       name:"LCD_init",
       val: () => {
-        return `LCD_init()`
+        return `LCD_init();`
       },
     },
   },

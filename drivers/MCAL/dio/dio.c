@@ -170,6 +170,24 @@ void DIO_port_write(uint8_t portNumber, uint8_t value){
     }
 }
 
+// Write a value to a port
+void DIO_port_send(uint8_t portNumber, uint8_t value){
+  switch (portNumber) {
+      case PORT_A:
+          PORTA = value;
+        break;
+      case PORT_B:
+          PORTB = value;
+        break;
+      case PORT_C:
+          PORTC = value;
+        break;
+      case PORT_D:
+          PORTD = value;
+        break;
+    }
+}
+
 // Read a value from a port
 uint8_t DIO_port_read(uint8_t portNumber){
   switch (portNumber) {

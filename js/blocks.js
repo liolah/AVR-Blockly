@@ -128,10 +128,25 @@ Blockly.Blocks.buzzer_off = {
   helpUrl: "",
   init: function () {
     this.setColour(350);
-    this.appendDummyInput().appendField("Turn Buzzer off");
-    this.setPreviousStatement(!0, null);
-    this.setNextStatement(!0, null);
-    this.setTooltip("Turns the buzzer off");
+    this.appendDummyInput().appendField("Turn Off The Buzzer module on Port ")
+    .appendField(
+      new Blockly.FieldDropdown([
+        ["A", "PORT_A"],
+        ["B", "PORT_B"],
+        ["C", "PORT_C"],
+        ["D", "PORT_D"],
+      ]),
+      "modulePort"
+    )
+    .appendField("Shifted ")
+    .appendField(
+      new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+      "pinShift"
+    )
+    .appendField(" pins.");
+  this.setPreviousStatement(!0, null);
+  this.setNextStatement(!0, null);
+  this.setTooltip("Turns the buzzer off");
   },
 };
 Blockly.Blocks.dot_matrix_display_char = {
@@ -141,7 +156,26 @@ Blockly.Blocks.dot_matrix_display_char = {
     this.appendDummyInput()
       .appendField("Display character")
       .appendField(new Blockly.FieldTextInput("X"), "CHARACTER")
-      .appendField("on dot matrix");
+      .appendField("on dot matrix on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORTA"],
+          ["B", "PORTB"],
+          ["C", "PORTC"],
+          ["D", "PORTD"],
+        ]),
+        "modulePort"
+      )
+      .appendField("on DDR")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "DDRA"],
+          ["B", "DDRB"],
+          ["C", "DDRC"],
+          ["D", "DDRD"],
+        ]),
+        "DDR"
+      );
     this.setPreviousStatement(!0, null);
     this.setNextStatement(!0, null);
     this.setTooltip("Display a character on a dot matrix display");
@@ -156,6 +190,26 @@ Blockly.Blocks.eight_digit_seven_segment_display = {
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "NUMBER"
+      )
+      .appendField("on eight digit seven segment, on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORTA"],
+          ["B", "PORTB"],
+          ["C", "PORTC"],
+          ["D", "PORTD"],
+        ]),
+        "modulePort"
+      )
+      .appendField("on DDR")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "DDRA"],
+          ["B", "DDRB"],
+          ["C", "DDRC"],
+          ["D", "DDRD"],
+        ]),
+        "DDR"
       );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -192,26 +246,89 @@ Blockly.Blocks.EEPROM_read_byte = {
   init: function () {
     this.setColour(210);
     this.appendDummyInput()
-      .appendField("Read byte from EEPROM")
-      .appendField(
-        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
-        "ADDRESS"
+    .appendField("Read byte from EEPROM")
+    .appendField(
+      new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+      "ADDRESS"
       )
       .appendField("from page")
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "PAGE"
-      );
-    this.setOutput(true, null);
-    this.setTooltip("Read a byte from EEPROM at a specific address");
-  },
+        );
+        this.setOutput(true, null);
+        this.setTooltip("Read a byte from EEPROM at a specific address");
+      },
+    };
+    
+    Blockly.Blocks.four_digits_seven_segment_display_num = {
+      helpUrl: "",
+      init: function () {
+        this.setColour(210);
+        this.appendDummyInput()
+        .appendField("Display Number")
+        .appendField(
+          new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+          "NUMBER"
+          )
+          .appendField("on four digit seven segment")
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setTooltip("Display a number on the four digit seven segment");
+        },
 };
 
+Blockly.Blocks.four_digits_seven_segment_display_string = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(210);
+    this.appendDummyInput()
+    .appendField("Display string")
+    .appendField(new Blockly.FieldTextInput("Hello"), "STRING")
+      .appendField("on four digit seven segment")
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setTooltip("Display a string on the four digit seven segment");
+    },
+};
+
+Blockly.Blocks.four_digits_seven_segment_brightness = {
+  helpUrl: "",
+  init: function () {
+    this.setColour(210);
+    this.appendDummyInput()
+    .appendField("Set 4 digit seven segment brightness")
+    .appendField(
+      new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+      "brightness"
+      )
+      .appendField("on four digit seven segment")
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setTooltip("Set 4 digit seven segment brightness");
+    },
+};
 Blockly.Blocks.keypad_getPressedKey = {
   helpUrl: "",
   init: function () {
-    this.setColour(230);
-    this.appendDummyInput().appendField("Get pressed key from keypad");
+    this.setColour(160);
+    this.appendDummyInput()
+      .appendField("Get pressed key from keypad")
+      .appendField("on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      );
     this.setOutput(true, "String");
     this.setTooltip("Returns the pressed key from the keypad");
   },
@@ -224,7 +341,26 @@ Blockly.Blocks.LCD_sendData = {
     this.appendDummyInput()
       .appendField("Send data")
       .appendField(new Blockly.FieldTextInput("0"), "DATA")
-      .appendField("to LCD");
+      .appendField("to LCD on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with DDR")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "DDR"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Send data to the LCD");
@@ -238,7 +374,26 @@ Blockly.Blocks.LCD_sendCommand = {
     this.appendDummyInput()
       .appendField("Send command")
       .appendField(new Blockly.FieldTextInput("0"), "COMMAND")
-      .appendField("to LCD");
+      .appendField("to LCD on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with DDR")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "DDR"
+      )
+      .appendField("and pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Send a command to the LCD");
@@ -252,7 +407,31 @@ Blockly.Blocks.LCD_write_string = {
     this.appendDummyInput()
       .appendField("Write string")
       .appendField(new Blockly.FieldTextInput("Hello"), "STRING")
-      .appendField("to LCD");
+      .appendField("to LCD on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORTA"],
+          ["B", "PORTB"],
+          ["C", "PORTC"],
+          ["D", "PORTD"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with DDR")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "DDRA"],
+          ["B", "DDRB"],
+          ["C", "DDRC"],
+          ["D", "DDRD"],
+        ]),
+        "DDR"
+      )
+      .appendField("and pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Write a string to the LCD");
@@ -267,7 +446,27 @@ Blockly.Blocks.LCD_move_cursor_xy = {
       .appendField("Move cursor to X:")
       .appendField(new Blockly.FieldTextInput("0"), "X")
       .appendField("Y:")
-      .appendField(new Blockly.FieldTextInput("0"), "Y");
+      .appendField(new Blockly.FieldTextInput("0"), "Y")
+      .appendField("on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with DDR")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "DDR"
+      )
+      .appendField("and pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Move the cursor to the specified position on the LCD");
@@ -285,7 +484,26 @@ Blockly.Blocks.LCD_write_string_xy = {
       .appendField(new Blockly.FieldTextInput("0"), "X")
       .appendField("Y:")
       .appendField(new Blockly.FieldTextInput("0"), "Y")
-      .appendField("on LCD");
+      .appendField("on LCD on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with DDR")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "DDR"
+      )
+      .appendField("and pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Write a string at the specified position on the LCD");
@@ -296,7 +514,26 @@ Blockly.Blocks.LCD_clear_screen = {
   helpUrl: "",
   init: function () {
     this.setColour(230);
-    this.appendDummyInput().appendField("Clear screen of LCD");
+    this.appendDummyInput().appendField("Clear screen of LCD on port")
+    .appendField(
+      new Blockly.FieldDropdown([
+        ["A", "PORT_A"],
+        ["B", "PORT_B"],
+        ["C", "PORT_C"],
+        ["D", "PORT_D"],
+      ]),
+      "modulePort"
+    )
+    .appendField("with DDR")
+    .appendField(
+      new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+      "DDR"
+    )
+    .appendField("and pins shifted")
+    .appendField(
+      new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+      "pinShift"
+    );
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Clear the screen of the LCD");
@@ -309,9 +546,30 @@ Blockly.Blocks.LED_on = {
     this.setColour(180);
     this.appendDummyInput()
       .appendField("Turn LED")
+      .appendField(new Blockly.FieldDropdown([
+        ["0", "0"],
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"]
+      ]), "LEDNumber")
+      .appendField("on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
-        "LEDNumber"
+        "pinShift"
       )
       .appendField("on");
     this.setPreviousStatement(true, null);
@@ -326,9 +584,30 @@ Blockly.Blocks.LED_off = {
     this.setColour(180);
     this.appendDummyInput()
       .appendField("Turn LED")
+      .appendField(new Blockly.FieldDropdown([
+        ["0", "0"],
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"]
+      ]), "LEDNumber")
+      .appendField("on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
-        "LEDNumber"
+        "pinShift"
       )
       .appendField("off");
     this.setPreviousStatement(true, null);
@@ -343,10 +622,31 @@ Blockly.Blocks.LED_toggle = {
     this.setColour(180);
     this.appendDummyInput()
       .appendField("Toggle LED")
+      .appendField(new Blockly.FieldDropdown([
+        ["0", "0"],
+        ["1", "1"],
+        ["2", "2"],
+        ["3", "3"],
+        ["4", "4"],
+        ["5", "5"],
+        ["6", "6"],
+        ["7", "7"]
+      ]), "LEDNumber")
+      .appendField("on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
-        "LEDNumber"
-      );
+        "pinShift"
+      )
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Toggles the state of an LED");
@@ -363,8 +663,23 @@ Blockly.Blocks.motor_on = {
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "motorNumber"
       )
+      .appendField("on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
       .appendField("on")
-      .appendField("Direction")
+      .appendField("with Direction")
       .appendField(
         new Blockly.FieldDropdown([
           ["Clockwise", "0"],
@@ -388,7 +703,22 @@ Blockly.Blocks.motor_off = {
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "motorNumber"
       )
-      .appendField("off");
+      .appendField("on, connected to port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
+      .appendField("off")
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Turns off a motor");
@@ -404,7 +734,22 @@ Blockly.Blocks.servo_move_to_angle = {
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "dc"
-      );
+      )
+      .appendField("with motor on port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Moves a servo to a specific angle");
@@ -457,7 +802,21 @@ Blockly.Blocks.relay_on = {
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "relayNumber"
       )
-      .appendField("on");
+      .appendField("on, connected to port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Turns on a relay");
@@ -474,7 +833,21 @@ Blockly.Blocks.relay_off = {
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "relayNumber"
       )
-      .appendField("off");
+      .appendField("off, connected to port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Turns off a relay");
@@ -490,7 +863,22 @@ Blockly.Blocks.relay_toggle = {
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "relayNumber"
-      );
+      )
+      .appendField("connected to port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Toggles the state of a relay");
@@ -506,7 +894,21 @@ Blockly.Blocks.SSR_set_brightness = {
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "dc"
-      );
+      ).appendField(" with relay connected to port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip("Sets the brightness of an SSR");
@@ -523,7 +925,22 @@ Blockly.Blocks.single_digit_seven_segment_show_hex_num = {
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "num"
       )
-      .appendField("on Single Digit Seven Segment Display");
+      .appendField("on Single Digit Seven Segment Display")
+      .appendField("connected to port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setTooltip(
@@ -541,7 +958,22 @@ Blockly.Blocks.push_button_read = {
       .appendField(
         new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
         "button"
-      );
+      )
+      .appendField("connected to port")
+      .appendField(
+        new Blockly.FieldDropdown([
+          ["A", "PORT_A"],
+          ["B", "PORT_B"],
+          ["C", "PORT_C"],
+          ["D", "PORT_D"],
+        ]),
+        "modulePort"
+      )
+      .appendField("with pins shifted")
+      .appendField(
+        new Blockly.FieldTextInput("0", Blockly.FieldTextInput.numberValidator),
+        "pinShift"
+      )
     this.setOutput(true, null);
     this.setTooltip("Reads the state of a push button");
   },

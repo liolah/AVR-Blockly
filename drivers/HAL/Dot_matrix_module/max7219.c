@@ -9,6 +9,7 @@ Please refer to LICENSE file for licensing information.
 
 
 #include <stdio.h>
+#include <stdint.h>
 #include <avr/io.h>
 #include <util/atomic.h>
 
@@ -23,10 +24,10 @@ static volatile uint8_t max7219_values[MAX7219_ICNUMBER][8];
 void max7219_shiftout(uint8_t bytedata) {
 	uint8_t j = 0;
 
-#if MAX7219_ATOMICMODEENABLED == 1
-	ATOMIC_BLOCK(ATOMIC_FORCEON)
-	{
-#endif
+// #if MAX7219_ATOMICMODEENABLED == 1
+// 	// ATOMIC_BLOCK(ATOMIC_FORCEON)
+// 	// {
+// #endif
 	//the shift is made in reverse order for this ic
 	for(j=8; j>0; j--){
 		uint8_t val = (bytedata & (1<<(j-1)))>>(j-1);
@@ -37,9 +38,9 @@ void max7219_shiftout(uint8_t bytedata) {
 			MAX7219_DINPORT &= ~(1 << MAX7219_DININPUT);
 		MAX7219_CLKPORT |= (1 << MAX7219_CLKINPUT); //set the serial-clock pin high
 	}
-#if MAX7219_ATOMICMODEENABLED == 1
-	}
-#endif
+// #if MAX7219_ATOMICMODEENABLED == 1
+// 	}
+// #endif
 }
 
 

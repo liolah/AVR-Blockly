@@ -7,10 +7,6 @@
 #define SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PORT PORT_B
 #endif
 
-#ifndef SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PINS_SHIFT
-#define SINGLE_DIGIT_SEVEN_SEGMENT_MODULE_PINS_SHIFT 0
-#endif
-
 void Single_digit_seven_segment_module_init();
 
 void Single_digit_seven_segment_show_hex_num(uint8_t num);

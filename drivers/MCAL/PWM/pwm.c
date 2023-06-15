@@ -1,7 +1,7 @@
 #include "pwm.h"
 
 // Helper function to select the prescalar 
-void set_prescalar(u8 timer, uint16_t prescalarValue) {
+void set_prescalar(uint8_t timer, uint16_t prescalarValue) {
   switch (timer) {
       case TIMER_0:
         if (prescalarValue == 0 || prescalarValue == 1 || prescalarValue == 8 || prescalarValue == 64 || prescalarValue == 256 || prescalarValue == 1024) {
@@ -39,9 +39,6 @@ void set_prescalar(u8 timer, uint16_t prescalarValue) {
                 break;
             }
           }
-        else {
-          return WRONG_PRESCALAR;
-          }
         break;
       case TIMER_1:
         if (prescalarValue == 0 || prescalarValue == 1 || prescalarValue == 8 || prescalarValue == 64 || prescalarValue == 256 || prescalarValue == 1024) {
@@ -78,9 +75,6 @@ void set_prescalar(u8 timer, uint16_t prescalarValue) {
                 set_bit(TCCR1B, CS12);
                 break;
             }
-          }
-        else {
-          return WRONG_PRESCALAR;
           }
         break;
       case TIMER_2:
@@ -129,29 +123,18 @@ void set_prescalar(u8 timer, uint16_t prescalarValue) {
                 break;
             }
           }
-        else {
-          return WRONG_PRESCALAR;
-          }
         break;
     }
-  // Everything went well
-  return TIMER_OK;
   }
 
 // Start the timer
-EN_timerError_t Timer_start(u8 timerNumber, uint16_t prescalar) {
-  // Validate the timer number
-  if (!isValidTimer(timerNumber)) {
-    return WRONG_TIMER;
-    }
+void Timer_start(uint8_t timerNumber, uint16_t prescalar) {
   // Select the clock source (prescaler) to start the timer 
   set_prescalar(timerNumber, prescalar);
-  // Everything went well
-  return TIMER_OK;
   }
 
 // Initialize the timers to start in pwm mode
-EN_timerError_t PWM_init(u8 pwmPin, double dutyCycle, u8 mode) {
+void PWM_init(uint8_t pwmPin, double dutyCycle, uint8_t mode) {
   switch (pwmPin) {
       case OC_0:
         switch (mode) {
@@ -165,7 +148,7 @@ EN_timerError_t PWM_init(u8 pwmPin, double dutyCycle, u8 mode) {
               break;
           }
         // The value in the OCR determines the duty cycle
-        OCR0 = (u8)(dutyCycle * 255);
+        OCR0 = (uint8_t)(dutyCycle * 255);
         break;
  case OC_1A:
       case OC_1B:
@@ -205,18 +188,14 @@ EN_timerError_t PWM_init(u8 pwmPin, double dutyCycle, u8 mode) {
               break;
           }
         // The value in the OCR determines the duty cycle
-        OCR2 = (u8)(dutyCycle * 255);
+        OCR2 = (uint8_t)(dutyCycle * 255);
         break;
     }
   PWM_OCP_connect(pwmPin);
-  return TIMER_OK;
   }
 
 // Connects the OC pins.
-EN_timerError_t PWM_OCP_connect(u8 pwmPin) {
-  if (pwmPin != OC_0 && pwmPin != OC_1A && pwmPin != OC_1B && pwmPin != OC_2) {
-    return WRONG_PWM_PIN;
-    }
+void PWM_OCP_connect(uint8_t pwmPin) {
   switch (pwmPin) {
       case OC_0:
 #if PWM_SIGNAL_INVERSION == PWM_NON_INVERTED_MODE
@@ -255,14 +234,13 @@ EN_timerError_t PWM_OCP_connect(u8 pwmPin) {
 #endif
         break;
     }
-  return TIMER_OK;
   }
 
 // Change the duty cycle of a timer
-void PWM_set_DC(u8 pwmPin, double dutyCycle) {
+void PWM_set_DC(uint8_t pwmPin, double dutyCycle) {
   switch (pwmPin) {
       case OC_0:
-        OCR0 = (u8)(dutyCycle * 255);
+        OCR0 = (uint8_t)(dutyCycle * 255);
         break;
       case OC_1A:
 #if (TIMER_1_FAST_PWM_MODE == TIMER_1_FAST_PWM_8_BIT || TIMER_1_PHASE_CORRECT_PWM_MODE == TIMER_1_PHASE_CORRECT_PWM_8_BIT)
@@ -291,7 +269,7 @@ void PWM_set_DC(u8 pwmPin, double dutyCycle) {
 #endif
         break;
       case OC_2:
-        OCR2 = (u8)(dutyCycle * 255);
+        OCR2 = (uint8_t)(dutyCycle * 255);
         break;
     }
   }

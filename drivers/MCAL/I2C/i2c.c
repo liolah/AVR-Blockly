@@ -36,3 +36,10 @@ void I2C_stop(void) {
   TWCR = (1 << TWSTO) | (1 << TWEN) | (1 << TWINT);
   while (read_bit(TWCR, TWSTO));
   }
+
+void I2C_write_x(uint8_t x, uint8_t y) {
+  I2C_start();
+  I2C_write(x << 1);
+  I2C_write(y);
+  I2C_stop();
+  }

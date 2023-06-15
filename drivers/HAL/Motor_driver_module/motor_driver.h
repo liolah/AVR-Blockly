@@ -20,6 +20,9 @@
 #define SERVO_MIN_ANGLE  0.0
 #define SERVO_MAX_ANGLE  180.0
 
+#define LEFT  0
+#define RIGHT 1
+
 void Motor_driver_init();
 
 void Motor_on(uint8_t motorNumber, uint8_t direction);

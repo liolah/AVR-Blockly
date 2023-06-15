@@ -30,4 +30,6 @@ uint8_t I2C_read_Nack();
 
 void I2C_stop(void);
 
+void I2C_write_x(uint8_t x, uint8_t y);
+
 #endif /* I2C_H_ */
